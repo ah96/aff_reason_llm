@@ -285,37 +285,57 @@ class OpenAIVisionClient(VisionLLMClient):
             from openai import OpenAI
         except Exception as e:
             die(f"OpenAI backend requires `pip install openai`. Import failed: {e}")
-        self._OpenAI = OpenAI
         self.model = model
         self.client = OpenAI()
 
     def complete_json(self, *, system: str, user: str, images_b64png: List[str]) -> Dict[str, Any]:
-        # OpenAI Responses API style, but compatible with "openai" python package.
-        # If you use a different OpenAI SDK version, you may need to adjust field names slightly.
         content = [{"type": "input_text", "text": user}]
         for b in images_b64png:
             content.append({"type": "input_image", "image_url": f"data:image/png;base64,{b}"})
 
+        # NOTE: Do NOT use response_format here; older SDKs don't support it for Responses API.
         resp = self.client.responses.create(
             model=self.model,
             input=[
-                {"role": "system", "content": system},
+                {"role": "system", "content": [{"type": "input_text", "text": system}]},
                 {"role": "user", "content": content},
             ],
-            response_format={"type": "json_object"},
+            temperature=0,
         )
-        # SDK returns structured output in different places depending on version.
-        # This is robust across common variants:
-        try:
-            txt = resp.output_text
-            return json.loads(txt)
-        except Exception:
-            # fallback: search any text
+
+        # Try the "easy" path first
+        text = getattr(resp, "output_text", None)
+        if not text:
+            # Fall back to digging through the response object
+            text_parts = []
             for item in getattr(resp, "output", []) or []:
                 for c in getattr(item, "content", []) or []:
-                    if getattr(c, "type", None) in ("output_text", "text"):
-                        return json.loads(getattr(c, "text"))
-        die("OpenAI response parsing failed (unexpected SDK response shape).")
+                    # SDKs vary: sometimes c has .text, sometimes dict-like
+                    t = None
+                    if isinstance(c, dict):
+                        if c.get("type") in ("output_text", "text"):
+                            t = c.get("text")
+                    else:
+                        if getattr(c, "type", None) in ("output_text", "text"):
+                            t = getattr(c, "text", None)
+                    if t:
+                        text_parts.append(t)
+            text = "\n".join(text_parts).strip()
+
+        if not text:
+            die("OpenAI response parsing failed: could not find any output text.")
+
+        # Robust JSON parsing:
+        # 1) direct parse
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            # 2) extract first {...} block
+            import re
+            m = re.search(r"\{.*\}", text, flags=re.DOTALL)
+            if not m:
+                die("Model did not return JSON. Re-run or strengthen prompt.")
+            return json.loads(m.group(0))
 
 
 class AnthropicVisionClient(VisionLLMClient):
@@ -496,6 +516,7 @@ Definitions (from the dataset paper Table 1):
 You must return STRICT JSON only, matching the schema below.
 Be conservative: if uncertain, prefer "Firmly Negative" or "Physical Obstacle" over wild social claims.
 Explanations/consequences must be short, factual, third-person, and grounded in the visible scene.
+Output ONLY valid JSON. Do not wrap in markdown. Do not include commentary.
 
 JSON schema:
 {{
@@ -534,11 +555,10 @@ def main() -> None:
     ap.add_argument("--device", default="cuda" if os.environ.get("CUDA_VISIBLE_DEVICES", "") != "" else "cpu")
 
     # SAM config
-    ap.add_argument("--sam_ckpt", default="sam_vit_h_4b8939.pth", help="SAM checkpoint path.")
+    ap.add_argument("--sam_ckpt", default="", help="Path to SAM checkpoint. If empty, auto-download.")
     ap.add_argument("--sam_type", default="vit_h", choices=["vit_h", "vit_l", "vit_b"], help="SAM model type.")
     ap.add_argument("--max_instances", type=int, default=30, help="Max instances to process (largest areas first).")
     ap.add_argument("--sam_cache_dir", default="", help="Directory to cache SAM checkpoints (optional).")
-    ap.add_argument("--sam_ckpt", default="", help="Path to SAM checkpoint. If empty, auto-download.")
 
     # LLM config
     ap.add_argument("--llm_backend", default="openai", help="openai|anthropic|gemini|ollama")
@@ -596,6 +616,7 @@ def main() -> None:
     sam_masks = mask_gen.generate(rgb)  # list of dicts with "segmentation" boolean mask
     if not sam_masks:
         die("SAM produced no masks. Try different thresholds or a different image.")
+    print("SAM DONE!\n")
 
     # Sort instances by descending area for stable ids and to prioritize salient objects
     sam_masks = sorted(sam_masks, key=lambda d: int(d.get("area", 0)), reverse=True)
@@ -605,6 +626,7 @@ def main() -> None:
     overlay = overlay_masks(rgb, masks_bool)
     overlay_path = outdir / f"{image_path.stem}_overlay.png"
     overlay.save(overlay_path)
+    print("OVERLAYING DONE!\n")
 
     # Init LLM
     client = make_llm_client(args.llm_backend, args.llm_model, args.ollama_host)
@@ -681,6 +703,7 @@ def main() -> None:
                 actions=actions_out,
             )
         )
+    print("LLM DONE!\n")
 
     # ----------------------------
     # Write outputs
