@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-infer_ade_affordance.py
+run_pipeline.py
 
 Prompt-free instance discovery (SAM) + LLM affordance reasoning, exported in ADE-Affordance-style files:
   - *_relationship.txt  (instance_id # sit_code # run_code # grasp_code)
@@ -8,56 +8,27 @@ Prompt-free instance discovery (SAM) + LLM affordance reasoning, exported in ADE
   - *_instances.json    (full structured output for analysis)
   - *_overlay.png       (mask overlay for sanity checking)
 
-Why this design is "publication-friendly":
-  - No affordance training required: segmentation is SOTA foundation model (SAM); reasoning is SOTA LLM.
-  - Reproducible: stable instance ids, deterministic ordering, caching of LLM calls.
-  - Comparable: exports the same artifact types as ADE-Affordance (relationship/exco), plus richer JSON.
-
 Notes on relationship codes:
-  The ADE-Affordance paper defines 7 relationship categories (Table 1) :contentReference[oaicite:2]{index=2}
+  The ADE-Affordance CVPR paper defines 7 relationship categories (Table 1),
   but the integer mapping (e.g., which category == 6) is not specified in the paper text we have.
-  Your sample relationship file uses codes {0,1,5,6} :contentReference[oaicite:3]{index=3} and the exco file
-  shows explanations/consequences for some of those ids :contentReference[oaicite:4]{index=4}.
   Therefore, this script makes the mapping configurable via JSON. Default mapping is a reasonable guess.
 
 Usage:
-  python3 infer_ade_affordance.py \
+  python3 run_pipeline.py \
       --image example.jpg \
       --outdir outputs \
+      --sam_ckpt sam_vit_h_4b8939.pth \
       --llm_backend openai \
       --llm_model gpt-4.1-mini \
       --actions sit run grasp
 
-Requirements:
-  - segment-anything (Meta SAM) + torch + torchvision
-  - opencv-python, pillow, numpy
+Requirements defined in requirements.txt file
 
 LLM backends (optional, choose one):
   - OpenAI:    pip install openai
   - Anthropic: pip install anthropic
   - Gemini:    pip install google-generativeai
   - Ollama:    no pip required; needs local ollama server
-
-  
-HOW TO RUN MINIMAL:
-# 1) Install SAM + basics
-pip install opencv-python pillow numpy
-pip install git+https://github.com/facebookresearch/segment-anything.git
-
-# 2) Download a SAM checkpoint (example: sam_vit_h_4b8939.pth) and place it locally
-
-# 3) Choose ONE LLM backend
-pip install openai        # or: pip install anthropic
-# or: pip install google-generativeai
-# or: use ollama locally
-
-# 4) Run
-python3 infer_ade_affordance.py \
-  --image example.jpg \
-  --sam_ckpt sam_vit_h_4b8939.pth \
-  --llm_backend openai \
-  --llm_model gpt-4.1-mini \
-  --outdir outputs
 """
 from __future__ import annotations
 
@@ -76,12 +47,12 @@ from PIL import Image
 
 from urllib.request import urlopen, Request
 
-# SAM CHECKPOINT (MODEL) URLS
+# SAM CHECKPOINT (MODEL) URLS  # official links
 SAM_CKPT_URLS = {
     "vit_h": "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth",
     "vit_l": "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth",
     "vit_b": "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth",
-}  # official links :contentReference[oaicite:1]{index=1}
+}
 
 # ----------------------------
 # Relationship categories (Table 1 in paper) :contentReference[oaicite:5]{index=5}
@@ -576,9 +547,12 @@ def main() -> None:
     image_path = Path(args.image)
     if not image_path.exists():
         die(f"Image not found: {image_path}")
+    #print("image_path: ", image_path)
 
     outdir = Path(args.outdir)
     ensure_dir(outdir)
+    #print("outdir: ", outdir)
+
 
     # Load relationship mapping
     relmap = DEFAULT_REL_CODEMAP.copy()
@@ -593,6 +567,7 @@ def main() -> None:
             die(f"relmap_json missing label: {k}")
         if not isinstance(relmap[k], int):
             die(f"relmap_json value for {k} must be int")
+    #print("relmap: ", relmap)
 
     # Load cache
     cache_path = Path(args.cache)
@@ -601,6 +576,7 @@ def main() -> None:
         cache = json.loads(cache_path.read_text(encoding="utf-8"))
     else:
         cache = {}
+    #print("cache_path: ", cache_path)
 
     # Load image
     pil = Image.open(image_path).convert("RGB")
@@ -612,11 +588,14 @@ def main() -> None:
         sam_ckpt=args.sam_ckpt if args.sam_ckpt else None,
         cache_dir=args.sam_cache_dir if args.sam_cache_dir else None,
     )
+    #print("ckpt_path: ", ckpt_path)
     mask_gen = load_sam(ckpt_path, args.sam_type, args.device)
+    #print("mask_gen: ", mask_gen)
     sam_masks = mask_gen.generate(rgb)  # list of dicts with "segmentation" boolean mask
+    #print("sam_masks: ", sam_masks)
     if not sam_masks:
         die("SAM produced no masks. Try different thresholds or a different image.")
-    print("SAM DONE!\n")
+    print("\nSAM DONE!\n")
 
     # Sort instances by descending area for stable ids and to prioritize salient objects
     sam_masks = sorted(sam_masks, key=lambda d: int(d.get("area", 0)), reverse=True)
@@ -626,22 +605,26 @@ def main() -> None:
     overlay = overlay_masks(rgb, masks_bool)
     overlay_path = outdir / f"{image_path.stem}_overlay.png"
     overlay.save(overlay_path)
-    print("OVERLAYING DONE!\n")
-
+    print("\nOVERLAYING DONE!\n")        
+    
     # Init LLM
     client = make_llm_client(args.llm_backend, args.llm_model, args.ollama_host)
     sys_prompt = build_system_prompt(args.actions)
+    # print("sys_prompt: ", sys_prompt)
     usr_prompt = build_user_prompt(args.actions)
+    # print("usr_prompt: ", usr_prompt)
 
     full_img_b64 = b64_png(pil)
 
     predictions: List[InstancePrediction] = []
 
     for idx, m in enumerate(masks_bool):
-        inst_id = f"{idx:03d}"  # ADE-style 3-digit ids in your sample :contentReference[oaicite:6]{index=6}
+        inst_id = f"{idx:03d}"  # ADE-style 3-digit ids as from the sample
         bbox = mask_to_bbox(m)
         area = int(m.sum())
-
+        print('\n')
+        print("(idx, inst_id) = ", (idx, inst_id))
+        
         crop = crop_with_mask(rgb, m, pad=0.12)
         crop_b64 = b64_png(crop)
 
@@ -665,12 +648,17 @@ def main() -> None:
 
         # Validate / normalize LLM output
         obj_name = str(llm_out.get("object_name", "object")).strip()[:80]
+        print("obj_name:", obj_name)
         per_action = llm_out.get("per_action", {}) or {}
+        print("per_action:", per_action)
         actions_out: Dict[str, Dict[str, Any]] = {}
+        # print("actions_out:", actions_out)
 
         for a in args.actions:
             a_out = per_action.get(a, {}) or {}
+            print("a_out", a_out)
             label = str(a_out.get("relationship_label", "Firmly Negative")).strip()
+            print("label", label)
 
             if label not in REL_CATEGORIES:
                 # Defensive fallback: keep pipeline running
@@ -703,7 +691,7 @@ def main() -> None:
                 actions=actions_out,
             )
         )
-    print("LLM DONE!\n")
+    print("\nLLM DONE!\n")
 
     # ----------------------------
     # Write outputs
