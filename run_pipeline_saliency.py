@@ -23,10 +23,7 @@ IMPORTANT: Affordance saliency model API is provided via an ADAPTER module you w
   - predict_saliency(model: Any, pil_rgb: PIL.Image, label: str) -> np.ndarray (H,W float in [0,1] OR logits)
 See "adapter_affordance_example.py" stub at bottom of this file.
 
-This design is publication-friendly:
-  - clear decomposition: perception evidence (saliency) -> reasoning (LLM) -> structured outputs
-  - cost-efficient: LLM calls only for top-K pairs
-  - reproducible: stable instance IDs, caching, deterministic ordering
+python3 run_pipeline_saliency.py --adapter adapter_affordance_example.py
 """
 
 import argparse
@@ -897,26 +894,3 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-
-"""
-------------------------------------------------------------
-adapter_affordance_example.py  (YOU CREATE THIS FILE)
-------------------------------------------------------------
-Save as: adapter_affordance_example.py
-Then run:
-  python3 run_pipeline_saliency.py --adapter adapter_affordance_example.py ...
-
-You must implement these two functions to wrap YOUR affordance saliency model code.
-
-Example skeleton (replace with your model import + forward):
-
-def load_model(ckpt_path: str, device: str):
-    # TODO: load your torch model checkpoint here
-    # return model
-    raise NotImplementedError
-
-def predict_saliency(model, pil_rgb, label: str):
-    # TODO: run model(pil_rgb, label) -> saliency map
-    # Must return np.ndarray of shape (H,W), float.
-    raise NotImplementedError
-"""
