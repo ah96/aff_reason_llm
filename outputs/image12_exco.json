@@ -1,0 +1,88 @@
+{
+  "sit": {
+    "001": {
+      "explanation": "Sitting on a person who is working violates personal space boundaries and social norms.",
+      "consequence": "The man would likely feel uncomfortable, annoyed, or be disrupted from his task."
+    },
+    "004": {
+      "explanation": "The human neck structure is not designed to support the weight of another person sitting on it.",
+      "consequence": "Attempting to sit on the head would likely cause serious spinal injury to the person and instability for the sitter."
+    },
+    "009": {
+      "explanation": "The person is seated closely at a table with their upper body leaning forward over the workspace, leaving no physical gap to occupy the lap.",
+      "consequence": "Attempting to sit here is physically impossible due to the lack of space between the person and the table."
+    },
+    "011": {
+      "explanation": "Sitting on another person without consent is a violation of personal space and social norms.",
+      "consequence": "It would be highly intrusive and dangerous, as the man is currently holding a sharp knife to peel vegetables."
+    },
+    "015": {
+      "explanation": "The man is holding a knife and peeling a vegetable; sitting on him would bring one close to the blade and disrupt his control.",
+      "consequence": "This interaction creates a high risk of accidental stabbing or cutting injury to either party."
+    },
+    "016": {
+      "explanation": "The man is leaning forward and using a sharp knife; attempting to sit on his shoulder is physically unstable and unsafe.",
+      "consequence": "The action would likely cause him to lose his balance or control of the knife, leading to accidental cuts or injury."
+    }
+  },
+  "run": {
+    "002": {
+      "explanation": "The pot is filled with water and heavy food items, making it unstable to carry at high speeds.",
+      "consequence": "Running with the open pot would likely cause the water to spill, creating a slipping hazard, or cause the carrier to lose their balance and drop the heavy object."
+    },
+    "023": {
+      "explanation": "Running in the confined space of a kitchen where another person is actively peeling food with a sharp knife is hazardous.",
+      "consequence": "Accidental collision with the person using the knife could result in serious physical injury from the blade."
+    }
+  },
+  "grasp": {
+    "000": {
+      "explanation": "The vegetable is being actively peeled with a sharp knife by the person in the image.",
+      "consequence": "Attempting to grasp the vegetable while it is being cut could result in hand injury from the knife blade."
+    },
+    "001": {
+      "explanation": "Grasping or grabbing another person without invitation is considered rude and violates bodily autonomy.",
+      "consequence": "The man might react negatively to the unsolicited physical contact, creating a socially tense situation."
+    },
+    "003": {
+      "explanation": "The curtain is positioned immediately behind a person who is using a sharp knife to peel a root vegetable.",
+      "consequence": "Reaching to grasp the curtain would require placing one's hand in close proximity to the knife, creating a significant risk of accidental injury."
+    },
+    "004": {
+      "explanation": "Grasping the head of a person who is actively focused on cooking is a violation of personal space and bodily autonomy.",
+      "consequence": "The action would startle the person, likely causing distress and disrupting the task involving sharp tools."
+    },
+    "008": {
+      "explanation": "The vegetable is being actively sliced with a sharp knife by a person.",
+      "consequence": "Attempting to grasp the vegetable during the cutting process could result in accidental injury from the blade."
+    },
+    "009": {
+      "explanation": "Grasping a person's thigh or lap area without invitation is a violation of personal boundaries and social norms.",
+      "consequence": "Such an action would be considered harassment or highly rude, leading to social conflict."
+    },
+    "011": {
+      "explanation": "Physically grasping another person like an object is socially inappropriate and violates bodily autonomy.",
+      "consequence": "Touching or grabbing him unexpectedly could startle him, potentially causing him to cut himself or others with the knife."
+    },
+    "013": {
+      "explanation": "The person is actively using a sharp knife to peel a vegetable held by the hand inside this sleeve.",
+      "consequence": "Grasping the sleeve could disturb the person's grip or arm movement, causing the knife to slip and result in an accidental cut."
+    },
+    "015": {
+      "explanation": "Grabbing the man's torso or shirt is an uninvited invasion of personal space.",
+      "consequence": "Such a gesture would be perceived as aggressive or weird, likely causing the man to stop his work and react defensively."
+    },
+    "016": {
+      "explanation": "The man is engaged in a precise task using a sharp knife to peel a vegetable.",
+      "consequence": "Grasping his shoulder could startle him or bump his arm, causing the knife to slip and resulting in injury."
+    },
+    "018": {
+      "explanation": "The hand is stabilizing a root vegetable in close proximity to a sharp knife being used for peeling.",
+      "consequence": "Interfering with the hand could cause the knife to slip or the person to lose control, leading to accidental injury."
+    },
+    "029": {
+      "explanation": "The knife is currently being wielded by a person to peel a vegetable, and its handle is firmly gripped by their hand.",
+      "consequence": "Attempting to grasp the knife while it is in use could result in accidental injury from the blade or a physical struggle with the person holding it."
+    }
+  }
+}

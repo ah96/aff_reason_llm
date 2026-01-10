@@ -1,0 +1,818 @@
+{
+  "image": "images/image12.jpg",
+  "actions": [
+    "sit",
+    "run",
+    "grasp"
+  ],
+  "relationship_categories": [
+    "Positive",
+    "Firmly Negative",
+    "Object Non-functional",
+    "Physical Obstacle",
+    "Socially Awkward",
+    "Socially Forbidden",
+    "Dangerous to ourselves/others"
+  ],
+  "relationship_code_map": {
+    "Positive": 0,
+    "Firmly Negative": 1,
+    "Object Non-functional": 2,
+    "Physical Obstacle": 3,
+    "Socially Awkward": 4,
+    "Socially Forbidden": 5,
+    "Dangerous to ourselves/others": 6
+  },
+  "instances": [
+    {
+      "instance_id": "000",
+      "object_name": "root vegetable",
+      "bbox_xyxy": [
+        131,
+        0,
+        425,
+        459
+      ],
+      "area": 99725,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The vegetable is being actively peeled with a sharp knife by the person in the image.",
+          "consequence": "Attempting to grasp the vegetable while it is being cut could result in hand injury from the knife blade."
+        }
+      }
+    },
+    {
+      "instance_id": "001",
+      "object_name": "man in maroon shirt",
+      "bbox_xyxy": [
+        0,
+        0,
+        426,
+        240
+      ],
+      "area": 38029,
+      "actions": {
+        "sit": {
+          "relationship_label": "Socially Awkward",
+          "relationship_code": 4,
+          "explanation": "Sitting on a person who is working violates personal space boundaries and social norms.",
+          "consequence": "The man would likely feel uncomfortable, annoyed, or be disrupted from his task."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Socially Awkward",
+          "relationship_code": 4,
+          "explanation": "Grasping or grabbing another person without invitation is considered rude and violates bodily autonomy.",
+          "consequence": "The man might react negatively to the unsolicited physical contact, creating a socially tense situation."
+        }
+      }
+    },
+    {
+      "instance_id": "002",
+      "object_name": "large metal pot with water and plantains",
+      "bbox_xyxy": [
+        164,
+        433,
+        426,
+        639
+      ],
+      "area": 35036,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The pot is filled with water and heavy food items, making it unstable to carry at high speeds.",
+          "consequence": "Running with the open pot would likely cause the water to spill, creating a slipping hazard, or cause the carrier to lose their balance and drop the heavy object."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "003",
+      "object_name": "white curtain",
+      "bbox_xyxy": [
+        1,
+        0,
+        164,
+        241
+      ],
+      "area": 31295,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The curtain is positioned immediately behind a person who is using a sharp knife to peel a root vegetable.",
+          "consequence": "Reaching to grasp the curtain would require placing one's hand in close proximity to the knife, creating a significant risk of accidental injury."
+        }
+      }
+    },
+    {
+      "instance_id": "004",
+      "object_name": "person's head",
+      "bbox_xyxy": [
+        130,
+        0,
+        327,
+        177
+      ],
+      "area": 26829,
+      "actions": {
+        "sit": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The human neck structure is not designed to support the weight of another person sitting on it.",
+          "consequence": "Attempting to sit on the head would likely cause serious spinal injury to the person and instability for the sitter."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Socially Forbidden",
+          "relationship_code": 5,
+          "explanation": "Grasping the head of a person who is actively focused on cooking is a violation of personal space and bodily autonomy.",
+          "consequence": "The action would startle the person, likely causing distress and disrupting the task involving sharp tools."
+        }
+      }
+    },
+    {
+      "instance_id": "005",
+      "object_name": "bunch of green bananas",
+      "bbox_xyxy": [
+        0,
+        329,
+        324,
+        639
+      ],
+      "area": 17000,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "006",
+      "object_name": "red potatoes",
+      "bbox_xyxy": [
+        1,
+        414,
+        186,
+        639
+      ],
+      "area": 13399,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "007",
+      "object_name": "pot with water and peeled plantain",
+      "bbox_xyxy": [
+        197,
+        520,
+        425,
+        626
+      ],
+      "area": 10415,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "008",
+      "object_name": "root vegetable",
+      "bbox_xyxy": [
+        134,
+        140,
+        330,
+        381
+      ],
+      "area": 10283,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The vegetable is being actively sliced with a sharp knife by a person.",
+          "consequence": "Attempting to grasp the vegetable during the cutting process could result in accidental injury from the blade."
+        }
+      }
+    },
+    {
+      "instance_id": "009",
+      "object_name": "person's lap",
+      "bbox_xyxy": [
+        279,
+        370,
+        426,
+        460
+      ],
+      "area": 7806,
+      "actions": {
+        "sit": {
+          "relationship_label": "Physical Obstacle",
+          "relationship_code": 3,
+          "explanation": "The person is seated closely at a table with their upper body leaning forward over the workspace, leaving no physical gap to occupy the lap.",
+          "consequence": "Attempting to sit here is physically impossible due to the lack of space between the person and the table."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Socially Forbidden",
+          "relationship_code": 5,
+          "explanation": "Grasping a person's thigh or lap area without invitation is a violation of personal boundaries and social norms.",
+          "consequence": "Such an action would be considered harassment or highly rude, leading to social conflict."
+        }
+      }
+    },
+    {
+      "instance_id": "010",
+      "object_name": "bunch of green bananas",
+      "bbox_xyxy": [
+        106,
+        396,
+        293,
+        456
+      ],
+      "area": 7754,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "011",
+      "object_name": "man in red shirt",
+      "bbox_xyxy": [
+        297,
+        0,
+        426,
+        87
+      ],
+      "area": 7337,
+      "actions": {
+        "sit": {
+          "relationship_label": "Socially Forbidden",
+          "relationship_code": 5,
+          "explanation": "Sitting on another person without consent is a violation of personal space and social norms.",
+          "consequence": "It would be highly intrusive and dangerous, as the man is currently holding a sharp knife to peel vegetables."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Socially Forbidden",
+          "relationship_code": 5,
+          "explanation": "Physically grasping another person like an object is socially inappropriate and violates bodily autonomy.",
+          "consequence": "Touching or grabbing him unexpectedly could startle him, potentially causing him to cut himself or others with the knife."
+        }
+      }
+    },
+    {
+      "instance_id": "012",
+      "object_name": "red potatoes",
+      "bbox_xyxy": [
+        63,
+        516,
+        167,
+        607
+      ],
+      "area": 6150,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "013",
+      "object_name": "maroon shirt sleeve",
+      "bbox_xyxy": [
+        315,
+        252,
+        426,
+        342
+      ],
+      "area": 6022,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The person is actively using a sharp knife to peel a vegetable held by the hand inside this sleeve.",
+          "consequence": "Grasping the sleeve could disturb the person's grip or arm movement, causing the knife to slip and result in an accidental cut."
+        }
+      }
+    },
+    {
+      "instance_id": "014",
+      "object_name": "root vegetable",
+      "bbox_xyxy": [
+        14,
+        337,
+        135,
+        495
+      ],
+      "area": 5813,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "015",
+      "object_name": "man in red shirt",
+      "bbox_xyxy": [
+        290,
+        328,
+        426,
+        385
+      ],
+      "area": 5103,
+      "actions": {
+        "sit": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The man is holding a knife and peeling a vegetable; sitting on him would bring one close to the blade and disrupt his control.",
+          "consequence": "This interaction creates a high risk of accidental stabbing or cutting injury to either party."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Socially Awkward",
+          "relationship_code": 4,
+          "explanation": "Grabbing the man's torso or shirt is an uninvited invasion of personal space.",
+          "consequence": "Such a gesture would be perceived as aggressive or weird, likely causing the man to stop his work and react defensively."
+        }
+      }
+    },
+    {
+      "instance_id": "016",
+      "object_name": "man's shoulder",
+      "bbox_xyxy": [
+        345,
+        0,
+        426,
+        86
+      ],
+      "area": 5060,
+      "actions": {
+        "sit": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The man is leaning forward and using a sharp knife; attempting to sit on his shoulder is physically unstable and unsafe.",
+          "consequence": "The action would likely cause him to lose his balance or control of the knife, leading to accidental cuts or injury."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The man is engaged in a precise task using a sharp knife to peel a vegetable.",
+          "consequence": "Grasping his shoulder could startle him or bump his arm, causing the knife to slip and resulting in injury."
+        }
+      }
+    },
+    {
+      "instance_id": "017",
+      "object_name": "root vegetable",
+      "bbox_xyxy": [
+        14,
+        429,
+        135,
+        496
+      ],
+      "area": 4969,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "018",
+      "object_name": "person's hand",
+      "bbox_xyxy": [
+        233,
+        296,
+        329,
+        380
+      ],
+      "area": 4894,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The hand is stabilizing a root vegetable in close proximity to a sharp knife being used for peeling.",
+          "consequence": "Interfering with the hand could cause the knife to slip or the person to lose control, leading to accidental injury."
+        }
+      }
+    },
+    {
+      "instance_id": "019",
+      "object_name": "peeled plantain submerged in a pot of water",
+      "bbox_xyxy": [
+        277,
+        531,
+        426,
+        610
+      ],
+      "area": 4647,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "020",
+      "object_name": "peeled plantain",
+      "bbox_xyxy": [
+        197,
+        520,
+        310,
+        626
+      ],
+      "area": 4609,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "021",
+      "object_name": "taro root",
+      "bbox_xyxy": [
+        99,
+        328,
+        326,
+        431
+      ],
+      "area": 4438,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "022",
+      "object_name": "plastic storage container",
+      "bbox_xyxy": [
+        0,
+        287,
+        55,
+        413
+      ],
+      "area": 4387,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "023",
+      "object_name": "bunch of green plantains",
+      "bbox_xyxy": [
+        122,
+        396,
+        260,
+        446
+      ],
+      "area": 4030,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "Running in the confined space of a kitchen where another person is actively peeling food with a sharp knife is hazardous.",
+          "consequence": "Accidental collision with the person using the knife could result in serious physical injury from the blade."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "024",
+      "object_name": "large metal cooking pot",
+      "bbox_xyxy": [
+        310,
+        404,
+        426,
+        460
+      ],
+      "area": 3861,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "025",
+      "object_name": "bunch of green bananas",
+      "bbox_xyxy": [
+        106,
+        426,
+        224,
+        473
+      ],
+      "area": 3838,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "026",
+      "object_name": "peeled banana",
+      "bbox_xyxy": [
+        178,
+        583,
+        426,
+        639
+      ],
+      "area": 3820,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "027",
+      "object_name": "plastic produce bag",
+      "bbox_xyxy": [
+        28,
+        262,
+        142,
+        332
+      ],
+      "area": 3776,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "028",
+      "object_name": "red potatoes",
+      "bbox_xyxy": [
+        62,
+        516,
+        167,
+        571
+      ],
+      "area": 3696,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "029",
+      "object_name": "small knife",
+      "bbox_xyxy": [
+        132,
+        256,
+        198,
+        328
+      ],
+      "area": 3274,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Dangerous to ourselves/others",
+          "relationship_code": 6,
+          "explanation": "The knife is currently being wielded by a person to peel a vegetable, and its handle is firmly gripped by their hand.",
+          "consequence": "Attempting to grasp the knife while it is in use could result in accidental injury from the blade or a physical struggle with the person holding it."
+        }
+      }
+    }
+  ]
+}

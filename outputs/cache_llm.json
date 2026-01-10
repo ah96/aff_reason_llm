@@ -1,0 +1,1302 @@
+{
+  "df3ac37577b3c399e6d44534300e1bdb51632c9d9b70d9d66a2ea6435ffce6be": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "d9034b8e4011070b2d0492986f60f034e6bebd93ae78a625a2b15a04c86c1627": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "10e0e542bcc3e4824f4dd84f6f5e003b73cf07eec9f6f8a712e1e33e049deeff": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "b78a2dfcc2fb2aaaf0b333f2d6d95ce7938343c23b25332c45053a329993a23e": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "a047600e22540ba65fdfce2be2401b4804e9f7cf19e304f5e9f729a3375ee48e": {
+    "object_name": "fish tail",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "48dba71ab11d769c9f3e1c7fedc2ad6c8223bdcb93ab8c3d40db991643ae40ed": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "799fdb45279ae028365592b98d1af9adeabf4648322bb6685ce6ec6b96ea0595": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "b0d74265e7cbbf18e854b278cb2acfaec2563b28fcafcf371efa71dbada65966": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "524e2b4a08531662d67df6a6e5d85f4c5e0de7b22dd1741bd5ce7728744aca9e": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "776f3bfa03d0746894ff292b91ced79799cee533aa22256619b11a6bd9906376": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "22e6695299e7babf895acdf141d0e72d5afb4bb7ddb7cf98320b6e47bbc8aabc": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "6abd1c4135998adb05168ce322383c2590bb7956dd25501c29650bf00497693d": {
+    "object_name": "fish tail",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "1074f3e46b85749927b871d873e82002b8e8f165dee334ee0a7c5cc4b5f6ee2a": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "2146c1ab4fff60e68cae00d683cd90a986dbb7137693c31c96a9bf35b39e2953": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "21d06fe1b044eecbb6dd4d9aacb246a244394c9ef213423b1651f041d9c97cdf": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "801c6ac2b6c1a7f1ff1325926b53b13ade4cc5f83b9dbead61ad87e08d9a1e38": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "a646c3eaadf600c7f5409a9ffff50e8377d5199ba3d88ab0028de54ad461c8df": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "2b28923e651b718c998e23c4d47fc6f005b27a619f586d5de73c6b007e4f8163": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "3ed48281dc354ee2966c085c147c1aecc5ae0e1c457ef2c37e3eb72b22638c23": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "2a6688369de1e83361e148a395ae1762631d9c11d7822c031deb40f867f36131": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "408b675378b7c269f191417156f61d101112d2810a6f54db094f239f89eaa1fb": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "d32ec8330782bf02a635e8b3f831481a8a1b9fb55255447374696c8fdf9e78c8": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "4eb5f008ca4d2045d2b668243b954f50e1c769ce342addafe7b093e7bc9cc0c4": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "16799b362611042a2c00c2254f18452333baa24cd10fb2efc2b07687123db3ee": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "7ecf3d8b71444ff7998bd6b818107522c4b4051ae34db0c4f303b783a92c7540": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "71b04b8fdb8645e8a237ffbc5f16aabd4a16c469efeabf4bd9733ff885ae108f": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "e89d56996b8a630a76a9125e30f50011dc66947666108f8c1f23559fd49a627f": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "5d2b9d9e4590a686eb3025d8b91308eb5c90b4d217bdab06c255b56d00521755": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "c69d8e33f470c2ab02acc966bf302f645f0727ee8cb6c25237da860e7c981a5b": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "9759b49986d273f832b91ef070245efdeab9490c81a82b1d615eef4a39f2a77d": {
+    "object_name": "fish",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "aff0ec2253076017ee5546714dd1df52e4e57617bcb7bae715d403a7993604ae": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "03251bfbd55b092b082ef1b0d3a75921a2d9f019a06c9e9a92755cb31faccf58": {
+    "object_name": "person",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Positive"
+      },
+      "run": {
+        "relationship_label": "Positive"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "38de86108b4a39a3d960e01d2555b23264c4cdd528df77ab3cacdd7b26f089c5": {
+    "object_name": "plantain in pot",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "5086f005d0b1f29cecb930aed25de187a19167f6f7eb43dff238953a5556f1d5": {
+    "object_name": "person",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Positive"
+      },
+      "run": {
+        "relationship_label": "Positive"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "018a6a20cd02052f3747bd61b1f51b57c9d2fa198995ee6ea091f9cdde316148": {
+    "object_name": "person",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Positive"
+      },
+      "run": {
+        "relationship_label": "Positive"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "0a5238965f2e4a71585915df1c284038f2415c6262c7ef410afa03d1b2b2e6aa": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "d68904c68e95f5bb96ab0fcf092e444e5f61e2e25497d098252b37e611d2ef2e": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "7436a4188dafcd526bea63512543dbe63184da4984d473849b6fc942ca6367c5": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "c8608f54a55b6479deb2596b0a969a2c020fc9dd95eb902b8006757c4d798d7d": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "982aeaf011f8a2402c66a104234ce2e9652265727bd250d1a01d20326a81b346": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "76e0f08676ed66a53a31c489b11b6f31265aca2fcd7d27241801bb53b1f53217": {
+    "object_name": "green plantains",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "9be871d2eb830163f2f7e6f742e6ae6b562bba2927266b4963508e98c88726ef": {
+    "object_name": "person",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Positive"
+      },
+      "run": {
+        "relationship_label": "Positive"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "e4c8dfd5895231d6bd92c0904989536bd415a0bac413eb7c4d95eed3588c3645": {
+    "object_name": "red potatoes",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "5f2bccc6bb91a5c4f3c17c3677771ca9296b65e30b885d1f4c7adc50edf4e295": {
+    "object_name": "human arm",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Positive"
+      },
+      "run": {
+        "relationship_label": "Positive"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "167eb05708b2f52fc437db1969d36b4a63e0b8fd45b6a001398892e0ada0127f": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "458287f200493a864978259a8a674cb3b4d8bee827f3d66ade7eb7556c08aaa4": {
+    "object_name": "knife",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "573cd7073811bb52b2c5a54158f18f447dae88fe3f937d73a1a8eff0df63cd01": {
+    "object_name": "sweet potato",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "0e9be66dd3b14e02017232704602de173129047124c09841c8a8b73ff22d1e92": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "056cfabfc3105ee3dd881340b6b726dd1398c5f42e5db33339c22285dffadbb9": {
+    "object_name": "root vegetable",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "3080e37e82a0ecd2478dd8169d0185aa8e3575c2a95a477f80fe7813fd3ec61f": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "4a653c07a812f3e01f9f8e185a216abcab2fe07fe1f774d803651e649b2b0556": {
+    "object_name": "plantain in water",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "1700bbf45cf93c0f9ee339e0eb85808ebf8f25048f407f863f45ac634d3c4d37": {
+    "object_name": "green plantains",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "7da6faca5a953ac1e550b323e718b160919132d2d3fb4e427bcb15394cb4df29": {
+    "object_name": "green banana",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "518aa9b50b2296b239aa588b0894f4dcaf925616790b3063bbdd8eadc409e45c": {
+    "object_name": "green banana bunch",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "be8ae14d78b2cbdbc3dde0e0ad9687a776bfd76ea39a6c9b55194d94c4331c09": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "2b493b23a4ac40c28ab89d5dc7af4bf386d95382cba26f59ddb2cdb407694a33": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "e1f82ec8c9b3143bdf0f8491817190cf7483e1a422c843f1086f77184f6e7744": {
+    "object_name": "plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "e56f59c11e82b9214c158e71dc479f0c626381c6e218a86b8a7fe35adc3744f2": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "dc569fbf50860d7aa9661e3f08acf07ca83a65ea8cc812c2b100c4535f16c017": {
+    "object_name": "potato",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "a9abec44479da556b158052992062d400d94e0ccda12b990f33078257dbcf6b4": {
+    "object_name": "sweet potato",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "9386c6a08eeb0cb64f87c78334c3f543262cd2ccbaa0cd38f760c743b7e56741": {
+    "object_name": "root vegetable",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The vegetable is being actively peeled with a sharp knife by the person in the image.",
+        "consequence": "Attempting to grasp the vegetable while it is being cut could result in hand injury from the knife blade."
+      }
+    }
+  },
+  "e270225640d70e7c32e8b94f646047d1e45d263f2ebdad76560ccc5d13ab38b0": {
+    "object_name": "man in maroon shirt",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Socially Awkward",
+        "explanation": "Sitting on a person who is working violates personal space boundaries and social norms.",
+        "consequence": "The man would likely feel uncomfortable, annoyed, or be disrupted from his task."
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Socially Awkward",
+        "explanation": "Grasping or grabbing another person without invitation is considered rude and violates bodily autonomy.",
+        "consequence": "The man might react negatively to the unsolicited physical contact, creating a socially tense situation."
+      }
+    }
+  },
+  "0451f1bed1b89a08d46c8c85021034a747d66b9a513cf1d7dae34d67c28e7689": {
+    "object_name": "large metal pot with water and plantains",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The pot is filled with water and heavy food items, making it unstable to carry at high speeds.",
+        "consequence": "Running with the open pot would likely cause the water to spill, creating a slipping hazard, or cause the carrier to lose their balance and drop the heavy object."
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "65ee69fff18f05b97b8448c21cbe19b9b230c7c95160ad398a8fae2ed4ba1ee4": {
+    "object_name": "white curtain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The curtain is positioned immediately behind a person who is using a sharp knife to peel a root vegetable.",
+        "consequence": "Reaching to grasp the curtain would require placing one's hand in close proximity to the knife, creating a significant risk of accidental injury."
+      }
+    }
+  },
+  "a34a1dcbd306b9126decc99a85ae53e7e614c66a59ddc96d5632bde437603ee5": {
+    "object_name": "person's head",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The human neck structure is not designed to support the weight of another person sitting on it.",
+        "consequence": "Attempting to sit on the head would likely cause serious spinal injury to the person and instability for the sitter."
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Socially Forbidden",
+        "explanation": "Grasping the head of a person who is actively focused on cooking is a violation of personal space and bodily autonomy.",
+        "consequence": "The action would startle the person, likely causing distress and disrupting the task involving sharp tools."
+      }
+    }
+  },
+  "111b366ae32b00cd518581d23d6f436affa0e2ec9560775e5a7dabcd5b31abd2": {
+    "object_name": "bunch of green bananas",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "d5b5c45a4dce565faff75572da1700131955c0943af70d75188afa0cfa5d9413": {
+    "object_name": "red potatoes",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "740cf0d82e61048253a380c396b9f0a006ff7bacbd1771ab79745081d3d492c1": {
+    "object_name": "pot with water and peeled plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "6b43aee85239c053d6a749edc556b9379ea1b57c76aa1c30c1f927c5c056369f": {
+    "object_name": "root vegetable",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The vegetable is being actively sliced with a sharp knife by a person.",
+        "consequence": "Attempting to grasp the vegetable during the cutting process could result in accidental injury from the blade."
+      }
+    }
+  },
+  "d87965f85d9b03b7f660d4add39bc5b1cef7c6f1a16180014c3f40949d296a90": {
+    "object_name": "person's lap",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Physical Obstacle",
+        "explanation": "The person is seated closely at a table with their upper body leaning forward over the workspace, leaving no physical gap to occupy the lap.",
+        "consequence": "Attempting to sit here is physically impossible due to the lack of space between the person and the table."
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Socially Forbidden",
+        "explanation": "Grasping a person's thigh or lap area without invitation is a violation of personal boundaries and social norms.",
+        "consequence": "Such an action would be considered harassment or highly rude, leading to social conflict."
+      }
+    }
+  },
+  "b1adec5d8a432bc22ca56c0682251e6e1d783e02b1cb3c80db8552f0b3541b66": {
+    "object_name": "bunch of green bananas",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "8709c912dda573f13b3261e6af98dde3335ede2212a3136799097ecc4ba02312": {
+    "object_name": "man in red shirt",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Socially Forbidden",
+        "explanation": "Sitting on another person without consent is a violation of personal space and social norms.",
+        "consequence": "It would be highly intrusive and dangerous, as the man is currently holding a sharp knife to peel vegetables."
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Socially Forbidden",
+        "explanation": "Physically grasping another person like an object is socially inappropriate and violates bodily autonomy.",
+        "consequence": "Touching or grabbing him unexpectedly could startle him, potentially causing him to cut himself or others with the knife."
+      }
+    }
+  },
+  "d545efed61b70010067206c77a989d12083cb06babdc81467761ffceb0e66593": {
+    "object_name": "red potatoes",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "1020cea66dfaec027dc323f45ea8d1c9b6399072f0c22a67b4e81585e658e657": {
+    "object_name": "maroon shirt sleeve",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The person is actively using a sharp knife to peel a vegetable held by the hand inside this sleeve.",
+        "consequence": "Grasping the sleeve could disturb the person's grip or arm movement, causing the knife to slip and result in an accidental cut."
+      }
+    }
+  },
+  "6172ec6b1ed5f6068bafa4cb8a7107757df7df0a9811542e35a66da669a06049": {
+    "object_name": "root vegetable",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "0146d36abc5f22f7e3efcc0395347289279477bbe23af26753c2db042a66d9df": {
+    "object_name": "man in red shirt",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The man is holding a knife and peeling a vegetable; sitting on him would bring one close to the blade and disrupt his control.",
+        "consequence": "This interaction creates a high risk of accidental stabbing or cutting injury to either party."
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Socially Awkward",
+        "explanation": "Grabbing the man's torso or shirt is an uninvited invasion of personal space.",
+        "consequence": "Such a gesture would be perceived as aggressive or weird, likely causing the man to stop his work and react defensively."
+      }
+    }
+  },
+  "d21157da61ff470124815d6f9a0ef29100aefdec0b2df8108f35f9ce59a1e0bd": {
+    "object_name": "man's shoulder",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The man is leaning forward and using a sharp knife; attempting to sit on his shoulder is physically unstable and unsafe.",
+        "consequence": "The action would likely cause him to lose his balance or control of the knife, leading to accidental cuts or injury."
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The man is engaged in a precise task using a sharp knife to peel a vegetable.",
+        "consequence": "Grasping his shoulder could startle him or bump his arm, causing the knife to slip and resulting in injury."
+      }
+    }
+  },
+  "7ca4f57ad8fc51f0ecc44222584cc22fc9fd0d76def01ddbc98547abb6518db5": {
+    "object_name": "root vegetable",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "6c67f8b330b9319156d84d2aac20ed727355fe4fdcae38fdd074c19063a6abd0": {
+    "object_name": "person's hand",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The hand is stabilizing a root vegetable in close proximity to a sharp knife being used for peeling.",
+        "consequence": "Interfering with the hand could cause the knife to slip or the person to lose control, leading to accidental injury."
+      }
+    }
+  },
+  "f85a280be179dff57f39cde5c6dd0b72019744d711ec1c96a9b09a8a7cc2223f": {
+    "object_name": "peeled plantain submerged in a pot of water",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "d7829174dfead47600edea85c34a34072d9d6b6afd14654ba6eb9663bab9623f": {
+    "object_name": "peeled plantain",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "aac82869b6b719c646b7d02a67357ee76cbf5105b5f3007acfbbe8589533cba9": {
+    "object_name": "taro root",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "ae213dd71c03cccda32f7bf4394c806c40b3067e1953a4125ada9de84892ed90": {
+    "object_name": "plastic storage container",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "22d41b023ffbb020c072f344b5347775a4331d251cc05b1a26329b92bfc6f7a0": {
+    "object_name": "bunch of green plantains",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "Running in the confined space of a kitchen where another person is actively peeling food with a sharp knife is hazardous.",
+        "consequence": "Accidental collision with the person using the knife could result in serious physical injury from the blade."
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "8ab2a897c78d1000cd9e10ab9743d7699c46a08b6eab2914ad1c12f2093760e7": {
+    "object_name": "large metal cooking pot",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "009e281b54cd1251b0f68f2c6ed3b50d35f3028a2747d367610dfae9bfb1cc97": {
+    "object_name": "bunch of green bananas",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "aa9ff0f5435949f1b666eef368368696e310376cb90501a50aabb8b9acae0842": {
+    "object_name": "peeled banana",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "a26875fb9ecd4b6b6c8c03aea051664070a41bf60a5d5d10c112afbbc3867ab5": {
+    "object_name": "plastic produce bag",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "8bc18798cc4625970cffdccb9413190e81a330375ab38011ce37443dc6686937": {
+    "object_name": "red potatoes",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Positive"
+      }
+    }
+  },
+  "17c912dea49eef9c920c24c31a2f173c32053b18ccb9a4f2cf2e771d7e8a2b10": {
+    "object_name": "small knife",
+    "per_action": {
+      "sit": {
+        "relationship_label": "Firmly Negative"
+      },
+      "run": {
+        "relationship_label": "Firmly Negative"
+      },
+      "grasp": {
+        "relationship_label": "Dangerous to ourselves/others",
+        "explanation": "The knife is currently being wielded by a person to peel a vegetable, and its handle is firmly gripped by their hand.",
+        "consequence": "Attempting to grasp the knife while it is in use could result in accidental injury from the blade or a physical struggle with the person holding it."
+      }
+    }
+  }
+}

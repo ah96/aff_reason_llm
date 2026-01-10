@@ -1,0 +1,778 @@
+{
+  "image": "images/image1.jpeg",
+  "actions": [
+    "sit",
+    "run",
+    "grasp"
+  ],
+  "relationship_categories": [
+    "Positive",
+    "Firmly Negative",
+    "Object Non-functional",
+    "Physical Obstacle",
+    "Socially Awkward",
+    "Socially Forbidden",
+    "Dangerous to ourselves/others"
+  ],
+  "relationship_code_map": {
+    "Positive": 0,
+    "Firmly Negative": 1,
+    "Object Non-functional": 2,
+    "Physical Obstacle": 3,
+    "Socially Awkward": 4,
+    "Socially Forbidden": 5,
+    "Dangerous to ourselves/others": 6
+  },
+  "instances": [
+    {
+      "instance_id": "000",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        0,
+        1,
+        499,
+        373
+      ],
+      "area": 149843,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "001",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        35,
+        128,
+        425,
+        300
+      ],
+      "area": 34540,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "002",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        366,
+        20,
+        499,
+        124
+      ],
+      "area": 9209,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "003",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        35,
+        212,
+        282,
+        301
+      ],
+      "area": 7350,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "004",
+      "object_name": "fish tail",
+      "bbox_xyxy": [
+        35,
+        212,
+        120,
+        301
+      ],
+      "area": 4596,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "005",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        347,
+        176,
+        425,
+        287
+      ],
+      "area": 4117,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "006",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        402,
+        296,
+        499,
+        373
+      ],
+      "area": 4049,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "007",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        362,
+        178,
+        425,
+        235
+      ],
+      "area": 2524,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "008",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        331,
+        225,
+        375,
+        288
+      ],
+      "area": 1663,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "009",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        148,
+        237,
+        199,
+        280
+      ],
+      "area": 1562,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "010",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        461,
+        211,
+        499,
+        265
+      ],
+      "area": 1545,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "011",
+      "object_name": "fish tail",
+      "bbox_xyxy": [
+        193,
+        128,
+        264,
+        160
+      ],
+      "area": 1464,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "012",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        347,
+        226,
+        375,
+        288
+      ],
+      "area": 1333,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "013",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        225,
+        247,
+        282,
+        277
+      ],
+      "area": 1245,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "014",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        472,
+        212,
+        499,
+        246
+      ],
+      "area": 828,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "015",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        109,
+        159,
+        221,
+        204
+      ],
+      "area": 650,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "016",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        52,
+        0,
+        90,
+        30
+      ],
+      "area": 645,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "017",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        35,
+        180,
+        62,
+        209
+      ],
+      "area": 503,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "018",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        386,
+        0,
+        498,
+        8
+      ],
+      "area": 452,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "019",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        106,
+        171,
+        142,
+        187
+      ],
+      "area": 392,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "020",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        477,
+        279,
+        499,
+        318
+      ],
+      "area": 381,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "021",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        173,
+        138,
+        196,
+        163
+      ],
+      "area": 358,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "022",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        330,
+        250,
+        351,
+        281
+      ],
+      "area": 276,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "023",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        0,
+        118,
+        12,
+        144
+      ],
+      "area": 227,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "024",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        195,
+        245,
+        223,
+        257
+      ],
+      "area": 227,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "025",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        224,
+        250,
+        240,
+        265
+      ],
+      "area": 205,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "026",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        487,
+        225,
+        499,
+        245
+      ],
+      "area": 173,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "027",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        307,
+        256,
+        323,
+        279
+      ],
+      "area": 147,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "028",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        259,
+        20,
+        267,
+        40
+      ],
+      "area": 140,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    },
+    {
+      "instance_id": "029",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        472,
+        0,
+        499,
+        7
+      ],
+      "area": 129,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0
+        }
+      }
+    }
+  ]
+}
