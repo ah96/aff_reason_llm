@@ -1,0 +1,8 @@
+numpy
+pillow
+tqdm
+requests
+nltk
+rouge-score
+opencv-python
+pycocoevalcap

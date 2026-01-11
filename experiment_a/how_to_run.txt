@@ -1,0 +1,15 @@
+pip install -r requirements.txt
+python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
+
+export OPENAI_API_KEY="..."
+export ANTHROPIC_API_KEY="..."
+export GEMINI_API_KEY="..."
+
+python eval_experiment_a.py \
+  --ade_ann_dir /path/to/ADE20K/annotations/training \
+  --objectinfo150 /path/to/objectInfo150.txt \
+  --aff_dir /path/to/ADE-Affordance/train \
+  --llms configs/llms.json \
+  --split train \
+  --limit_images 50 \
+  --only_exception_text

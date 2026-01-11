@@ -1,0 +1,42 @@
+pip install numpy pillow tqdm opencv-python requests segment-anything
+
+export OPENAI_API_KEY="..."
+export ANTHROPIC_API_KEY="..."
+export GEMINI_API_KEY="..."
+
+
+# mode b1: sam + llm
+python experiment_b_run.py \
+  --images_dir /path/to/rgb_images \
+  --outdir /path/to/expB_out/sam_faith \
+  --llms configs/llms.json \
+  --mode sam \
+  --sam_ckpt /path/to/sam_vit_h_4b8939.pth \
+  --device cuda \
+  --actions sit run grasp \
+  --faithfulness \
+  --perturb_method inpaint \
+  --faith_pairs_per_image 10
+
+
+# mode b2: sam + saliency + llm + faithfulness gap
+python experiment_b_run.py \
+  --images_dir /path/to/rgb_images \
+  --outdir /path/to/expB_out/sam_saliency_faith \
+  --llms configs/llms.json \
+  --mode sam_saliency \
+  --sam_ckpt /path/to/sam_vit_h_4b8939.pth \
+  --device cuda \
+  --actions sit run grasp \
+  --adapter adapters/adapter_affordance_example.py \
+  --seen_ckpt /path/to/seen_aff_model.pth \
+  --unseen_ckpt /path/to/unseen_aff_model.pth \
+  --topk_pairs 20 \
+  --min_pair_score 0.15 \
+  --faithfulness \
+  --perturb_method inpaint \
+  --faith_high_low 6
+
+  
+# run metrics
+python experiment_b_eval_metrics.py --outdir /path/to/expB_out/sam_saliency_faith

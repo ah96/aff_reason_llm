@@ -1,0 +1,36 @@
+[
+  {
+    "name": "gpt_4_1_mini",
+    "provider": "openai_compat",
+    "base_url": "https://api.openai.com/v1",
+    "api_key": "ENV:OPENAI_API_KEY",
+    "model": "gpt-4.1-mini",
+    "temperature": 0.0,
+    "max_tokens": 256
+  },
+  {
+    "name": "claude_3_5_sonnet",
+    "provider": "anthropic",
+    "api_key": "ENV:ANTHROPIC_API_KEY",
+    "model": "claude-3-5-sonnet-20240620",
+    "temperature": 0.0,
+    "max_tokens": 256
+  },
+  {
+    "name": "gemini_1_5_pro",
+    "provider": "gemini",
+    "api_key": "ENV:GEMINI_API_KEY",
+    "model": "gemini-1.5-pro",
+    "temperature": 0.0,
+    "max_tokens": 256
+  },
+  {
+    "name": "local_llama_vllm",
+    "provider": "openai_compat",
+    "base_url": "http://localhost:8000/v1",
+    "api_key": "EMPTY",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "temperature": 0.0,
+    "max_tokens": 256
+  }
+]
