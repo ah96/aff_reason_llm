@@ -1,8 +1,9 @@
 import os
 import json
 import argparse
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Dict, Any, List, Optional
 from tqdm import tqdm
+import numpy as np
 
 from ade_parsing import (
     load_objectinfo150,
@@ -10,15 +11,20 @@ from ade_parsing import (
     extract_instances_from_ade_png,
     compute_touching_adjacency,
     load_relationship_file,
-    load_exco_json
+    load_exco_json,
 )
+
 from llm_clients import load_llm_configs, make_client
-from metrics_relationship import compute_macc_metrics, REL7_NAMES
-from metrics_caption import compute_caption_metrics
+
+# from metrics_relationship import compute_macc_metrics
+# from metrics_caption import compute_caption_metrics
 
 
+# -----------------------------
+# LLM prompting
+# -----------------------------
 SYSTEM_PROMPT = """You are evaluating affordances in images under a CLOSED ontology.
-You must follow the label taxonomy EXACTLY and output STRICT JSON only, with no extra text.
+You must follow the label taxonomy EXACTLY and output STRICT JSON only.
 
 Relationship label ids:
 0: Positive
@@ -29,7 +35,7 @@ Relationship label ids:
 5: SociallyForbidden
 6: Dangerous
 
-Return schema (STRICT):
+Return schema:
 {
   "relationship_id": <int 0..6>,
   "explanation": <string>,
@@ -38,259 +44,290 @@ Return schema (STRICT):
 
 Rules:
 - Always output relationship_id.
-- If relationship_id is 0 or 1, set explanation="" and consequence="".
+- If relationship_id is 0 or 1, explanation and consequence must be empty strings.
 - If relationship_id is 2..6, explanation and consequence must be ONE short sentence each.
-- Do not mention these rules in the output.
 """
 
 
-def build_user_prompt(
-    action: str,
-    target: Dict[str, Any],
-    neighbors: List[Dict[str, Any]],
-) -> str:
-    """
-    Build a text-only scene graph description so LLM sees the same abstraction as GGNN:
-    object class + simple geometry + adjacency.
-    """
-    obj = target
-    neigh_lines = []
-    for n in neighbors[:20]:
-        neigh_lines.append(
-            f"- id={n['id']}, class={n['class_name']}, bbox={n['bbox']}, area={n['area']}"
-        )
-
-    prompt = f"""Task: Predict the relationship between action and target object, plus explanation/consequence if needed.
-
-Action: {action}
-
-Target object:
-- id={obj['id']}
-- class={obj['class_name']}
-- bbox={obj['bbox']}
-- area={obj['area']}
-
-Adjacent objects (touching in segmentation):
-{chr(10).join(neigh_lines) if neigh_lines else "- (none)"}
-
-Now output JSON with relationship_id/explanation/consequence.
-"""
-    return prompt
+# -----------------------------
+# Utilities
+# -----------------------------
+def _norm(p: str) -> str:
+    return os.path.normpath(p)
 
 
-def safe_read_json(path: str) -> Optional[Dict[str, Any]]:
+def read_json(path: str) -> Optional[Dict[str, Any]]:
     if not os.path.exists(path):
         return None
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def safe_write_json(path: str, data: Dict[str, Any]) -> None:
+def write_json(path: str, data: Dict[str, Any]) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 
-def iter_image_ids(ade_ann_dir: str, limit: Optional[int] = None, split: str = "train") -> List[str]:
+def to_refs(x: Any) -> List[str]:
+    """Normalize GT explanation/consequence to list[str]."""
+    if x is None:
+        return []
+    if isinstance(x, str):
+        s = x.strip()
+        return [s] if s else []
+    if isinstance(x, list):
+        return [v.strip() for v in x if isinstance(v, str) and v.strip()]
+    return []
+
+
+# -----------------------------
+# Dataset indexing (FLAT)
+# -----------------------------
+def build_aff_index_flat(ade_aff_dir: str) -> Dict[str, Dict[str, str]]:
     """
-    Collect annotation PNG filenames like ADE_train_00000001.png and return image_id base (without ext).
+    Build index from FLAT ADE-Affordance directory.
+
+    Returns:
+      image_id -> {"rel": path_to_relationship, "exco": path_to_exco_or_None}
     """
-    files = sorted([f for f in os.listdir(ade_ann_dir) if f.endswith(".png") and f.startswith(f"ADE_{split}_")])
-    ids = [os.path.splitext(f)[0] for f in files]
-    if limit is not None:
-        ids = ids[:limit]
-    return ids
+    root = ade_aff_dir
+    if not os.path.isdir(root):
+        raise RuntimeError(f"Affordance split not found: {root}")
+
+    rel_map = {}
+    exco_map = {}
+
+    for fn in os.listdir(root):
+        p = os.path.join(root, fn)
+        if not os.path.isfile(p):
+            continue
+        if fn.endswith("_relationship.txt"):
+            key = fn.replace("_relationship.txt", "")
+            rel_map[key] = p
+        elif fn.endswith("_exco.json"):
+            key = fn.replace("_exco.json", "")
+            exco_map[key] = p
+
+    out = {}
+    for k, rel_path in rel_map.items():
+        out[k] = {
+            "rel": rel_path,
+            "exco": exco_map.get(k, None),
+        }
+    return out
 
 
+def build_ann_name_list(ade_ann_dir: str) -> List[str]:
+    root = ade_ann_dir
+    if not os.path.isdir(root):
+        raise RuntimeError(f"ADE annotation split not found: {root}")
+    # print("\n root: ", root)
+
+    idx = []
+    for dp, _, fns in os.walk(root):
+        for fn in fns:
+            idx.append(fn[:-4])
+    return idx
+
+
+# -----------------------------
+# Prompt construction
+# -----------------------------
+def build_user_prompt(action: str, target: Dict[str, Any], neighbors: List[Dict[str, Any]]) -> str:
+    neigh_txt = "\n".join(
+        f"- class={n['class_name']} bbox={n['bbox']} area={n['area']}"
+        for n in neighbors
+    ) or "- none"
+
+    return f"""Action: {action}
+
+Target object:
+- class={target['class_name']}
+- bbox={target['bbox']}
+- area={target['area']}
+
+Adjacent objects:
+{neigh_txt}
+
+Predict relationship and explanation if needed.
+"""
+
+
+# -----------------------------
+# Main
+# -----------------------------
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ade_ann_dir", required=True, help="Path to ADE20K annotation PNGs (instance+class encoded).")
-    ap.add_argument("--objectinfo150", required=True, help="Path to objectInfo150.txt")
-    ap.add_argument("--aff_dir", required=True, help="Path to ADE-Affordance files (relationship.txt + exco.json).")
-    ap.add_argument("--llms", required=True, help="Path to configs/llms.json")
-    ap.add_argument("--split", default="train", choices=["train", "val"], help="ADE split prefix: train/val")
-    ap.add_argument("--limit_images", type=int, default=50, help="Limit number of images for a quick run.")
-    ap.add_argument("--actions", default="sit,run,grasp", help="Comma-separated actions to evaluate.")
-    ap.add_argument("--max_instances_per_image", type=int, default=40, help="Cap instances per image to reduce cost.")
-    ap.add_argument("--cache_dir", default="cache_llm", help="Cache LLM predictions here.")
-    ap.add_argument("--only_exception_text", action="store_true",
-                    help="If set, compute text metrics ONLY on exception instances (2..6). Recommended.")
+    ap.add_argument("--ade_ann_dir", required=True)
+    ap.add_argument("--objectinfo150", required=True)
+    ap.add_argument("--ade_aff_dir", required=True)
+    ap.add_argument("--llms", required=True)
+    # ap.add_argument("--split", choices=["training", "validation", "testing"], required=True)
+    ap.add_argument("--actions", default="sit,grasp,run")
+    ap.add_argument("--limit_images", type=int, default=None)
+    ap.add_argument("--cache_dir", default="cache_llm")
     args = ap.parse_args()
 
     actions = [a.strip() for a in args.actions.split(",") if a.strip()]
+    # print("\n actions: ", actions)
 
     id2name = load_objectinfo150(args.objectinfo150)
+    # print("\n id2name: ", id2name)
+    ann_name_list = build_ann_name_list(args.ade_ann_dir)
+    ann_name_list.sort()
+    # print("\n len(ann_name_list): ", len(ann_name_list))
+    # print("\n ann_name_list: ", ann_name_list)
+    aff_index = build_aff_index_flat(args.ade_aff_dir)
+    aff_index = dict(sorted(aff_index.items()))
+    # print("\n aff_index: ", aff_index)
+    # print("\n len(aff_index): ", len(aff_index))
+
+    image_names = sorted(set(ann_name_list) & set(aff_index))
+    # print("\n image_names: ", image_names)
+    # print("\n len(image_names): ", len(image_names))
+    if args.limit_images:
+        image_names = image_names[: args.limit_images]
+    # print("\n image_names: ", image_names)
+    
     llm_cfgs = load_llm_configs(args.llms)
+    # print("\n llm_cfgs: ", llm_cfgs)
     clients = [(cfg.name, make_client(cfg)) for cfg in llm_cfgs]
+    # print("\n clients: ", clients)
 
-    image_ids = iter_image_ids(args.ade_ann_dir, limit=args.limit_images, split=args.split)
-    if not image_ids:
-        raise RuntimeError(f"No ADE annotation PNGs found in {args.ade_ann_dir} for split={args.split}")
-
-    # Aggregate per-LLM stats
+    # -----------------------------
+    # Accumulators
+    # -----------------------------
     results = {}
-    for llm_name, _ in clients:
-        results[llm_name] = {
-            "rel_gt7": [],
-            "rel_pred7": [],
-            "expl_metrics": [],  # list of dicts
-            "cons_metrics": [],  # list of dicts
-            "num_rel": 0,
-            "num_text": 0,
+    for name, _ in clients:
+        results[name] = {
+            "gt_rel": [],
+            "pred_rel": [],
+            "expl_metrics": [],
+            "cons_metrics": [],
+            "n_rel": 0,
+            "n_text": 0,
         }
+    # print("\n results: ", results)
+    
+    # -----------------------------
+    # Single evaluation loop
+    # -----------------------------
+    for image_name in tqdm(image_names, desc="Images"):
+        print("\n image_name: ", image_name)
+        ann = decode_ade_annotation(args.ade_ann_dir, image_name)
+        # print("\n ann: ", ann)
+        print(np.unique(ann))
+        # ann is the loaded PNG
+        """
+        if ann.ndim == 2 and ann.max() <= 255:
+            raise RuntimeError(
+                "ADE annotation is class-only (no instance IDs). "
+                "ADE-Affordance requires instance-level ADE20K annotations."
+            )
+        """
+        instances = extract_instances_from_ade_png(ann, id2name)
+        print("\n instances: ", instances)
+        print("\n len(instances): ", len(instances))
 
-    for image_id in tqdm(image_ids, desc="Images"):
-        ann_png = os.path.join(args.ade_ann_dir, image_id + ".png")
-        rel_txt = os.path.join(args.aff_dir, image_id + "_relationship.txt")
-        exco_js = os.path.join(args.aff_dir, image_id + "_exco.json")
-
-        if not os.path.exists(rel_txt) or not os.path.exists(exco_js):
-            # Skip if affordance annotations missing for this image
-            continue
-
-        ann = decode_ade_annotation(ann_png)
-        instances = extract_instances_from_ade_png(ann, id2name=id2name)
         adjacency = compute_touching_adjacency(instances)
+        print("\n adjacency: ", adjacency)
 
-        rel_map = load_relationship_file(rel_txt)  # instance_id -> action->label
-        exco_map = load_exco_json(exco_js)         # action -> instance_id -> text
+        rel_map = load_relationship_file(aff_index[image_name]["rel"])
+        print("\n rel_map: ", rel_map)
+        exco_map = load_exco_json(aff_index[image_name]["exco"]) if aff_index[image_name]["exco"] else {}
+        print("\n exco_map: ", exco_map)
 
-        # Choose only instances that appear in relationship map (some images may include ids not annotated)
-        candidate_ids = [iid for iid in instances.keys() if iid in rel_map]
-        candidate_ids = sorted(candidate_ids)[: args.max_instances_per_image]
+        return 0
+        for iid, inst in instances.items():
+            if iid not in rel_map:
+                continue
 
-        for iid in candidate_ids:
-            inst = instances[iid]
-            neigh_ids = adjacency.get(iid, [])
             neighbors = []
-            for nid in neigh_ids[:20]:
-                if nid not in instances:
-                    continue
-                ninst = instances[nid]
-                neighbors.append({
-                    "id": int(ninst.instance_id),
-                    "class_name": ninst.class_name,
-                    "bbox": list(ninst.bbox),
-                    "area": int(ninst.area),
-                })
+            for nid in adjacency.get(iid, []):
+                if nid in instances:
+                    n = instances[nid]
+                    neighbors.append({
+                        "class_name": n.class_name,
+                        "bbox": list(n.bbox),
+                        "area": int(n.area),
+                    })
 
-            target_obj = {
-                "id": int(inst.instance_id),
+            target = {
                 "class_name": inst.class_name,
                 "bbox": list(inst.bbox),
                 "area": int(inst.area),
             }
 
             for action in actions:
-                if iid not in rel_map or action not in rel_map[iid]:
+                if action not in rel_map[iid]:
                     continue
-                gt_rel7 = int(rel_map[iid][action])
 
-                # Build prompt once
-                user_prompt = build_user_prompt(action, target_obj, neighbors)
+                gt_rel = int(rel_map[iid][action])
+
+                prompt = build_user_prompt(action, target, neighbors)
 
                 for llm_name, client in clients:
                     cache_path = os.path.join(
-                        args.cache_dir, llm_name, f"{image_id}", f"{action}_{iid}.json"
+                        args.cache_dir, llm_name, image_name, f"{action}_{iid}.json"
                     )
-                    cached = safe_read_json(cache_path)
-                    if cached is None:
+
+                    pred = read_json(cache_path)
+                    if pred is None:
                         try:
-                            pred = client.chat_json(SYSTEM_PROMPT, user_prompt)
-                        except Exception as e:
-                            pred = {
-                                "relationship_id": -1,
-                                "explanation": "",
-                                "consequence": "",
-                                "error": str(e),
-                            }
-                        safe_write_json(cache_path, pred)
-                    else:
-                        pred = cached
+                            pred = client.chat_json(SYSTEM_PROMPT, prompt)
+                        except Exception:
+                            pred = {"relationship_id": -1, "explanation": "", "consequence": ""}
+                        write_json(cache_path, pred)
 
-                    # Relationship
-                    pred_rel7 = int(pred.get("relationship_id", -1))
-                    if pred_rel7 < 0 or pred_rel7 > 6:
-                        # Treat invalid as wrong but keep pipeline running
-                        pred_rel7 = -1
+                    pred_rel = int(pred.get("relationship_id", -1))
 
-                    results[llm_name]["rel_gt7"].append(gt_rel7)
-                    results[llm_name]["rel_pred7"].append(pred_rel7)
-                    results[llm_name]["num_rel"] += 1
+                    results[llm_name]["gt_rel"].append(gt_rel)
+                    results[llm_name]["pred_rel"].append(pred_rel)
+                    results[llm_name]["n_rel"] += 1
 
-                    # Text metrics: compare only if we have ground-truth text
-                    # In ADE-Affordance, exco exists only for exceptions; relationship is still defined for all.
-                    gt_text = exco_map.get(action, {}).get(iid, None)
-                    if gt_text is None:
-                        continue
+                    # ---- text metrics ONLY for exception cases with EXCO ----
+                    if 2 <= gt_rel <= 6 and action in exco_map and iid in exco_map[action]:
+                        gt = exco_map[action][iid]
+                        expl_refs = to_refs(gt.get("explanation"))
+                        cons_refs = to_refs(gt.get("consequence"))
 
-                    # Optionally restrict to exception relationships (recommended)
-                    if args.only_exception_text and not (2 <= gt_rel7 <= 6):
-                        continue
+                        if expl_refs:
+                            results[llm_name]["expl_metrics"].append(
+                                compute_caption_metrics(pred.get("explanation", ""), expl_refs)
+                            )
+                        if cons_refs:
+                            results[llm_name]["cons_metrics"].append(
+                                compute_caption_metrics(pred.get("consequence", ""), cons_refs)
+                            )
+                        results[llm_name]["n_text"] += 1
 
-                    gt_expl = gt_text.get("explanation", "").strip()
-                    gt_cons = gt_text.get("consequence", "").strip()
-                    pred_expl = str(pred.get("explanation", "")).strip()
-                    pred_cons = str(pred.get("consequence", "")).strip()
-
-                    if gt_expl:
-                        em = compute_caption_metrics(pred_expl, [gt_expl])
-                        results[llm_name]["expl_metrics"].append(em)
-                    if gt_cons:
-                        cm = compute_caption_metrics(pred_cons, [gt_cons])
-                        results[llm_name]["cons_metrics"].append(cm)
-
-                    results[llm_name]["num_text"] += 1
-
-    # Summarize
+    return 0 
+    # -----------------------------
+    # Reporting
+    # -----------------------------
     print("\n=== Experiment A Results ===")
-    for llm_name in results.keys():
-        gt7 = results[llm_name]["rel_gt7"]
-        pr7 = results[llm_name]["rel_pred7"]
+    for llm, r in results.items():
+        rel_metrics = compute_macc_metrics(r["gt_rel"], r["pred_rel"])
 
-        # Filter out invalid preds for metric computation (count them as wrong by mapping to an impossible class)
-        pr7_clean = [p if 0 <= p <= 6 else 999 for p in pr7]
+        def avg(ms, k):
+            return sum(m[k] for m in ms if k in m) / max(1, len(ms))
 
-        rel_metrics = compute_macc_metrics(gt7, pr7_clean)
+        print(f"\nLLM: {llm}")
+        print(f"  Relationship samples: {r['n_rel']}")
+        print(f"  Text samples (exceptions): {r['n_text']}")
+        print(f"  mAcc:   {rel_metrics['mAcc']:.4f}")
+        print(f"  mAcc-E: {rel_metrics['mAcc-E']:.4f}")
 
-        def avg_metric(metric_list: List[Dict[str, float]], key: str) -> float:
-            vals = [m[key] for m in metric_list if key in m and m[key] == m[key]]  # skip nan
-            return sum(vals) / max(1, len(vals))
-
-        expl = results[llm_name]["expl_metrics"]
-        cons = results[llm_name]["cons_metrics"]
-
-        print(f"\nLLM: {llm_name}")
-        print(f"  #relationship samples: {results[llm_name]['num_rel']}")
-        print(f"  mAcc   (3-way): {rel_metrics['mAcc']:.4f}")
-        print(f"  mAcc-E (7-way): {rel_metrics['mAcc-E']:.4f}")
-
-        if expl:
-            print("  Explanation metrics (avg):")
+        if r["expl_metrics"]:
+            print("  Explanation:")
             for k in ["BLEU-4", "METEOR", "ROUGE-L", "CIDEr"]:
-                print(f"    {k:7s}: {avg_metric(expl, k):.4f}")
-        else:
-            print("  Explanation metrics: NA (no samples)")
+                print(f"    {k}: {avg(r['expl_metrics'], k):.4f}")
 
-        if cons:
-            print("  Consequence metrics (avg):")
+        if r["cons_metrics"]:
+            print("  Consequence:")
             for k in ["BLEU-4", "METEOR", "ROUGE-L", "CIDEr"]:
-                print(f"    {k:7s}: {avg_metric(cons, k):.4f}")
-        else:
-            print("  Consequence metrics: NA (no samples)")
-
-        # Save per-LLM summary to disk
-        out_path = os.path.join(args.cache_dir, f"summary_{llm_name}.json")
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump({
-                "relationship": rel_metrics,
-                "num_relationship_samples": results[llm_name]["num_rel"],
-                "num_text_samples": results[llm_name]["num_text"],
-                "explanation_avg": {k: avg_metric(expl, k) for k in ["BLEU-4", "METEOR", "ROUGE-L", "CIDEr"]} if expl else None,
-                "consequence_avg": {k: avg_metric(cons, k) for k in ["BLEU-4", "METEOR", "ROUGE-L", "CIDEr"]} if cons else None,
-            }, f, ensure_ascii=False, indent=2)
-
-        print(f"  Saved summary -> {out_path}")
+                print(f"    {k}: {avg(r['cons_metrics'], k):.4f}")
 
 
 if __name__ == "__main__":

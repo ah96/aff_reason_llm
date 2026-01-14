@@ -9,19 +9,39 @@ import requests
 
 @dataclass
 class LLMConfig:
+    """
+    Provider-agnostic LLM configuration.
+
+    Expected JSON fields (see llms_updated.json for an example):
+      - name: human-readable name used for filenames / tables
+      - provider: "openai_compat" | "openai" | "anthropic" | "gemini"
+      - model: provider model id
+      - api_key: literal key OR "ENV:VARNAME"
+      - base_url: (openai/openai_compat only) e.g. "https://api.openai.com/v1" or "http://localhost:8000/v1"
+      - temperature: float (default 0.0)
+      - max_tokens: int (default 256)
+      - supports_vision: bool (default True). If False, the runner will skip this model for image inputs.
+    """
     name: str
-    provider: str  # openai | anthropic | gemini
+    provider: str
     model: str
     api_key: str
+    base_url: str = "https://api.openai.com/v1"
+    temperature: float = 0.0
+    max_tokens: int = 256
+    supports_vision: bool = True
 
 
 def _resolve_api_key(k: str) -> str:
-    if k.startswith("ENV:"):
+    if (k or "").startswith("ENV:"):
         return os.environ.get(k.replace("ENV:", ""), "")
     return k
 
 
 def _extract_json(text: str) -> Dict[str, Any]:
+    """
+    Robust JSON extraction: accept exact JSON or a response that contains a JSON object somewhere.
+    """
     text = (text or "").strip()
     try:
         return json.loads(text)
@@ -29,7 +49,7 @@ def _extract_json(text: str) -> Dict[str, Any]:
         s = text.find("{")
         e = text.rfind("}")
         if s >= 0 and e > s:
-            return json.loads(text[s:e+1])
+            return json.loads(text[s : e + 1])
         raise ValueError(f"LLM did not return JSON. Output:\n{text}")
 
 
@@ -38,56 +58,78 @@ class VisionLLMClient:
         raise NotImplementedError
 
 
-class OpenAIVisionClient(VisionLLMClient):
+class OpenAICompatVisionClient(VisionLLMClient):
     """
-    Uses OpenAI Responses API via REST (no SDK dependency).
+    OpenAI Chat Completions-compatible client (works for OpenAI and most OpenAI-compatible servers, e.g. vLLM).
+
+    We intentionally use /chat/completions rather than /responses because:
+      - it is widely supported by OpenAI-compatible servers
+      - it supports vision via message content with image_url for OpenAI models
     """
-    def __init__(self, model: str, api_key: str):
+    def __init__(self, model: str, api_key: str, base_url: str, temperature: float = 0.0, max_tokens: int = 256):
         self.model = model
         self.api_key = api_key
+        self.base_url = (base_url or "https://api.openai.com/v1").rstrip("/")
+        self.temperature = float(temperature)
+        self.max_tokens = int(max_tokens)
 
     def complete_json(self, *, system: str, user: str, images_b64png: List[str]) -> Dict[str, Any]:
-        url = "https://api.openai.com/v1/responses"
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-        }
+        url = f"{self.base_url}/chat/completions"
+        headers = {"Content-Type": "application/json"}
+        if self.api_key and self.api_key != "EMPTY":
+            headers["Authorization"] = f"Bearer {self.api_key}"
 
-        content = [{"type": "input_text", "text": user}]
+        user_content: List[Dict[str, Any]] = [{"type": "text", "text": user}]
         for b in images_b64png:
-            content.append({"type": "input_image", "image_url": f"data:image/png;base64,{b}"})
+            user_content.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:image/png;base64,{b}"}
+            })
 
-        payload = {
+        payload: Dict[str, Any] = {
             "model": self.model,
-            "input": [
-                {"role": "system", "content": [{"type": "input_text", "text": system}]},
-                {"role": "user", "content": content},
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user_content},
             ],
-            "temperature": 0.0,
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,
         }
 
-        r = requests.post(url, headers=headers, json=payload, timeout=90)
+        # Many providers support JSON mode; harmless if ignored.
+        payload["response_format"] = {"type": "json_object"}
+
+        r = requests.post(url, headers=headers, json=payload, timeout=120)
         r.raise_for_status()
         data = r.json()
 
-        # Try to get unified output text
-        text = data.get("output_text", "")
+        try:
+            text = data["choices"][0]["message"]["content"]
+        except Exception:
+            text = ""
+
         if not text:
-            # Fallback: scan output items
-            parts = []
-            for item in data.get("output", []) or []:
-                for c in item.get("content", []) or []:
-                    if isinstance(c, dict) and c.get("type") in ("output_text", "text") and c.get("text"):
+            # Some servers return list content blocks
+            msg = (data.get("choices", [{}])[0].get("message", {}) or {})
+            content = msg.get("content", "")
+            if isinstance(content, str):
+                text = content
+            elif isinstance(content, list):
+                parts = []
+                for c in content:
+                    if isinstance(c, dict) and c.get("type") == "text" and c.get("text"):
                         parts.append(c["text"])
-            text = "\n".join(parts).strip()
+                text = "\n".join(parts)
 
         return _extract_json(text)
 
 
 class ClaudeVisionClient(VisionLLMClient):
-    def __init__(self, model: str, api_key: str):
+    def __init__(self, model: str, api_key: str, temperature: float = 0.0, max_tokens: int = 256):
         self.model = model
         self.api_key = api_key
+        self.temperature = float(temperature)
+        self.max_tokens = int(max_tokens)
 
     def complete_json(self, *, system: str, user: str, images_b64png: List[str]) -> Dict[str, Any]:
         url = "https://api.anthropic.com/v1/messages"
@@ -96,7 +138,7 @@ class ClaudeVisionClient(VisionLLMClient):
             "anthropic-version": "2023-06-01",
             "content-type": "application/json",
         }
-        content = [{"type": "text", "text": user}]
+        content: List[Dict[str, Any]] = [{"type": "text", "text": user}]
         for b in images_b64png:
             content.append({
                 "type": "image",
@@ -107,11 +149,11 @@ class ClaudeVisionClient(VisionLLMClient):
             "model": self.model,
             "system": system,
             "messages": [{"role": "user", "content": content}],
-            "temperature": 0.0,
-            "max_tokens": 700,
+            "temperature": self.temperature,
+            "max_tokens": max(64, self.max_tokens),
         }
 
-        r = requests.post(url, headers=headers, json=payload, timeout=90)
+        r = requests.post(url, headers=headers, json=payload, timeout=120)
         r.raise_for_status()
         data = r.json()
 
@@ -126,17 +168,19 @@ class ClaudeVisionClient(VisionLLMClient):
 
 
 class GeminiVisionClient(VisionLLMClient):
-    def __init__(self, model: str, api_key: str):
+    def __init__(self, model: str, api_key: str, temperature: float = 0.0, max_tokens: int = 256):
         self.model = model
         self.api_key = api_key
+        self.temperature = float(temperature)
+        self.max_tokens = int(max_tokens)
 
     def complete_json(self, *, system: str, user: str, images_b64png: List[str]) -> Dict[str, Any]:
-        # Google Generative Language API (v1beta)
         model = self.model
         if not model.startswith("models/"):
             model = "models/" + model
         url = f"https://generativelanguage.googleapis.com/v1beta/{model}:generateContent?key={self.api_key}"
 
+        # Gemini expects inline bytes; decode base64 -> bytes
         parts: List[Dict[str, Any]] = [{"text": system + "\n\n" + user}]
         for b in images_b64png:
             parts.append({
@@ -146,14 +190,13 @@ class GeminiVisionClient(VisionLLMClient):
         payload = {
             "contents": [{"role": "user", "parts": parts}],
             "generationConfig": {
-                "temperature": 0.0,
-                "maxOutputTokens": 700,
-                # Request JSON if supported; still keep robust parsing
+                "temperature": self.temperature,
+                "maxOutputTokens": max(64, self.max_tokens),
                 "responseMimeType": "application/json",
             },
         }
 
-        r = requests.post(url, json=payload, timeout=90)
+        r = requests.post(url, json=payload, timeout=120)
         r.raise_for_status()
         data = r.json()
 
@@ -170,23 +213,33 @@ class GeminiVisionClient(VisionLLMClient):
 def load_llms(path: str) -> List[LLMConfig]:
     with open(path, "r", encoding="utf-8") as f:
         raw = json.load(f)
-    out = []
+    out: List[LLMConfig] = []
     for r in raw:
         out.append(LLMConfig(
             name=r["name"],
             provider=r["provider"],
             model=r["model"],
-            api_key=_resolve_api_key(r["api_key"]),
+            api_key=_resolve_api_key(r.get("api_key", "")),
+            base_url=r.get("base_url", "https://api.openai.com/v1"),
+            temperature=float(r.get("temperature", 0.0)),
+            max_tokens=int(r.get("max_tokens", 256)),
+            supports_vision=bool(r.get("supports_vision", True)),
         ))
     return out
 
 
 def make_client(cfg: LLMConfig) -> VisionLLMClient:
-    p = cfg.provider.lower().strip()
-    if p == "openai":
-        return OpenAIVisionClient(cfg.model, cfg.api_key)
+    p = (cfg.provider or "").lower().strip()
+    if p in ("openai_compat", "openai"):
+        return OpenAICompatVisionClient(
+            model=cfg.model,
+            api_key=cfg.api_key,
+            base_url=cfg.base_url,
+            temperature=cfg.temperature,
+            max_tokens=cfg.max_tokens,
+        )
     if p in ("anthropic", "claude"):
-        return ClaudeVisionClient(cfg.model, cfg.api_key)
+        return ClaudeVisionClient(cfg.model, cfg.api_key, cfg.temperature, cfg.max_tokens)
     if p in ("gemini", "google"):
-        return GeminiVisionClient(cfg.model, cfg.api_key)
+        return GeminiVisionClient(cfg.model, cfg.api_key, cfg.temperature, cfg.max_tokens)
     raise ValueError(f"Unknown provider: {cfg.provider}")

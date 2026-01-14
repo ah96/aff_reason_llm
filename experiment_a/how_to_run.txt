@@ -1,5 +1,9 @@
 pip install -r requirements.txt
-python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
+# python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
+
+# first run this script to flatten extract ADE-Affordance dataset
+python3 extract_ade_affordance_flat.py   --zip ./datasets/ADE-Affordance.zip   --out ./ADE-Affordance-flat   --paired_only false
+
 
 export OPENAI_API_KEY="..."
 export ANTHROPIC_API_KEY="..."

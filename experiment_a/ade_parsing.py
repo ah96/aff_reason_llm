@@ -61,12 +61,12 @@ def load_objectinfo150(path: str) -> Dict[int, str]:
     return id2name
 
 
-def decode_ade_annotation(png_path: str) -> np.ndarray:
+def decode_ade_annotation(ann_dir_path: str, png_name: str) -> np.ndarray:
     """
     Loads an ADE20K annotation PNG as uint8/uint16/uint32 array.
     We keep raw values and decode instance/class from channels robustly.
     """
-    ann = np.array(Image.open(png_path))
+    ann = np.array(Image.open(ann_dir_path + png_name + ".png"))
     return ann
 
 
