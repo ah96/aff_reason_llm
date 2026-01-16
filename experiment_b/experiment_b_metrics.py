@@ -1,5 +1,37 @@
-from typing import Dict, List, Any, Tuple
+"""experiment_b_metrics.py
+
+Base metrics for Experiment B.
+
+Originally this module only contained a small set of metrics.
+It now also re-exports a richer set from ``experiment_b_metrics_plus`` while
+keeping the original function names intact.
+"""
+
+from typing import Dict, List, Any
+
 import numpy as np
+
+# Optional richer metrics (kept in a separate module so legacy scripts that
+# only expect numpy keep working). If the module is missing, base metrics below
+# still work.
+try:
+    from experiment_b_metrics_plus import (
+        label_histogram,
+        label_entropy,
+        js_divergence,
+        mean_pairwise_js,
+        pairwise_agreement_rate,
+        saliency_auc_like,
+        SchemaStats,
+        compute_schema_stats,
+        bbox_iou_xyxy,
+        mean_pairwise_bbox_iou,
+        safe_mean,
+        safe_std,
+        safe_median,
+    )
+except Exception:  # pragma: no cover
+    pass
 
 
 def majority_vote(labels: List[int]) -> int:

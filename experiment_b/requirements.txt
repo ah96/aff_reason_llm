@@ -1,0 +1,52 @@
+# -------------------------
+# Core Python
+# -------------------------
+numpy>=1.23
+scipy>=1.9
+pillow>=9.5
+opencv-python>=4.7
+tqdm>=4.65
+
+# -------------------------
+# PyTorch (vision + SAM)
+# -------------------------
+torch>=2.0
+torchvision>=0.15
+
+# -------------------------
+# Segment Anything (SAM)
+# -------------------------
+segment-anything @ git+https://github.com/facebookresearch/segment-anything.git
+
+# -------------------------
+# Affordance saliency models
+# (your affordance segmentation / saliency networks)
+# -------------------------
+pyyaml>=6.0
+einops>=0.6
+
+# -------------------------
+# LLM clients (cloud + local OpenAI-compatible)
+# -------------------------
+openai>=1.0
+requests>=2.31
+
+# -------------------------
+# Local LLaMA serving (optional, but recommended)
+# -------------------------
+vllm>=0.4.0
+huggingface_hub>=0.20
+
+# -------------------------
+# Evaluation metrics
+# -------------------------
+nltk>=3.8
+rouge-score>=0.1.2
+pycocoevalcap>=1.2
+
+# -------------------------
+# Experiment utilities
+# -------------------------
+pandas>=1.5
+matplotlib>=3.7
+scikit-learn>=1.3

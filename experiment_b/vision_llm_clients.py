@@ -73,55 +73,47 @@ class OpenAICompatVisionClient(VisionLLMClient):
         self.temperature = float(temperature)
         self.max_tokens = int(max_tokens)
 
-    def complete_json(self, *, system: str, user: str, images_b64png: List[str]) -> Dict[str, Any]:
-        url = f"{self.base_url}/chat/completions"
-        headers = {"Content-Type": "application/json"}
-        if self.api_key and self.api_key != "EMPTY":
-            headers["Authorization"] = f"Bearer {self.api_key}"
+    def complete_json(self, system: str, user: str, images_b64png: list[str]) -> dict:
+        import requests, json
 
-        user_content: List[Dict[str, Any]] = [{"type": "text", "text": user}]
-        for b in images_b64png:
-            user_content.append({
+        # IMPORTANT: OpenAI expects a "data:" URL for base64 images
+        parts = [{"type": "text", "text": user}]
+        for b64 in images_b64png:
+            parts.append({
                 "type": "image_url",
-                "image_url": {"url": f"data:image/png;base64,{b}"}
+                "image_url": {"url": f"data:image/png;base64,{b64}"}
             })
 
-        payload: Dict[str, Any] = {
+        payload = {
             "model": self.model,
             "messages": [
                 {"role": "system", "content": system},
-                {"role": "user", "content": user_content},
+                {"role": "user", "content": parts},
             ],
-            "temperature": self.temperature,
-            "max_tokens": self.max_tokens,
+            "response_format": {"type": "json_object"},
+            "temperature": 0.0,
         }
 
-        # Many providers support JSON mode; harmless if ignored.
-        payload["response_format"] = {"type": "json_object"}
+        # Token parameter depends on model family
+        if self.model.startswith("gpt-5"):
+            payload["max_completion_tokens"] = self.max_tokens
+        else:
+            payload["max_tokens"] = self.max_tokens
 
-        r = requests.post(url, headers=headers, json=payload, timeout=120)
-        r.raise_for_status()
+        r = requests.post(
+            f"{self.base_url}/chat/completions",
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            json=payload,
+            timeout=120,
+        )
+
+        if r.status_code != 200:
+            # Print the actual OpenAI error message (this is vital!)
+            raise RuntimeError(f"HTTP {r.status_code}: {r.text}")
+
         data = r.json()
-
-        try:
-            text = data["choices"][0]["message"]["content"]
-        except Exception:
-            text = ""
-
-        if not text:
-            # Some servers return list content blocks
-            msg = (data.get("choices", [{}])[0].get("message", {}) or {})
-            content = msg.get("content", "")
-            if isinstance(content, str):
-                text = content
-            elif isinstance(content, list):
-                parts = []
-                for c in content:
-                    if isinstance(c, dict) and c.get("type") == "text" and c.get("text"):
-                        parts.append(c["text"])
-                text = "\n".join(parts)
-
-        return _extract_json(text)
+        content = data["choices"][0]["message"]["content"]
+        return json.loads(content)
 
 
 class ClaudeVisionClient(VisionLLMClient):
@@ -182,10 +174,10 @@ class GeminiVisionClient(VisionLLMClient):
 
         # Gemini expects inline bytes; decode base64 -> bytes
         parts: List[Dict[str, Any]] = [{"text": system + "\n\n" + user}]
-        for b in images_b64png:
-            parts.append({
-                "inline_data": {"mime_type": "image/png", "data": base64.b64decode(b)}
-            })
+        for b64 in images_b64png:
+            if isinstance(b64, (bytes, bytearray)):
+                b64 = b64.decode("utf-8")
+            parts.append({"inline_data": {"mime_type": "image/png", "data": b64}})
 
         payload = {
             "contents": [{"role": "user", "parts": parts}],
