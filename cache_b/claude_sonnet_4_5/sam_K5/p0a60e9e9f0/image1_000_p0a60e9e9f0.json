@@ -1,0 +1,20 @@
+{
+  "object_name": "dead fish",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Firmly Negative",
+      "explanation": "",
+      "consequence": ""
+    },
+    "run": {
+      "relationship_label": "Firmly Negative",
+      "explanation": "",
+      "consequence": ""
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

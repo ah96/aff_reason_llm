@@ -1,0 +1,185 @@
+{
+  "image": "images/image1.jpeg",
+  "mode": "sam",
+  "K": 5,
+  "actions": [
+    "sit",
+    "run",
+    "grasp"
+  ],
+  "relationship_categories": [
+    "Positive",
+    "Firmly Negative",
+    "Object Non-functional",
+    "Physical Obstacle",
+    "Socially Awkward",
+    "Socially Forbidden",
+    "Dangerous to ourselves/others"
+  ],
+  "relationship_code_map": {
+    "Positive": 0,
+    "Firmly Negative": 1,
+    "Object Non-functional": 2,
+    "Physical Obstacle": 3,
+    "Socially Awkward": 4,
+    "Socially Forbidden": 5,
+    "Dangerous to ourselves/others": 6
+  },
+  "instances": [
+    {
+      "instance_id": "000",
+      "object_name": "object",
+      "bbox_xyxy": [
+        0,
+        1,
+        499,
+        373
+      ],
+      "area": 149843,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "001",
+      "object_name": "yellow fish",
+      "bbox_xyxy": [
+        35,
+        128,
+        425,
+        300
+      ],
+      "area": 34540,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "The fish is too small and fragile to support the weight of a person.",
+          "consequence": "Attempting to sit on the fish would crush it."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "002",
+      "object_name": "object",
+      "bbox_xyxy": [
+        366,
+        20,
+        499,
+        124
+      ],
+      "area": 9209,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "003",
+      "object_name": "yellow fish",
+      "bbox_xyxy": [
+        35,
+        212,
+        282,
+        301
+      ],
+      "area": 7350,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "The fish is too small and fragile to support the weight of a person.",
+          "consequence": "Attempting to sit on the fish would crush it and cause the person to fall."
+        },
+        "run": {
+          "relationship_label": "Physical Obstacle",
+          "relationship_code": 3,
+          "explanation": "The fish is a small, slippery object on the ground that could cause someone to trip.",
+          "consequence": "Running over the fish could lead to slipping, falling, and potential injury."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "004",
+      "object_name": "yellow fish",
+      "bbox_xyxy": [
+        35,
+        212,
+        120,
+        301
+      ],
+      "area": 4596,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "The fish is too small and fragile to support the weight of a person.",
+          "consequence": "Attempting to sit on the fish would crush it and cause the person to fall."
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    }
+  ]
+}

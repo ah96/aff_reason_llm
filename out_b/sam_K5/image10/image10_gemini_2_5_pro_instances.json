@@ -1,0 +1,185 @@
+{
+  "image": "images/image10.jpg",
+  "mode": "sam",
+  "K": 5,
+  "actions": [
+    "sit",
+    "run",
+    "grasp"
+  ],
+  "relationship_categories": [
+    "Positive",
+    "Firmly Negative",
+    "Object Non-functional",
+    "Physical Obstacle",
+    "Socially Awkward",
+    "Socially Forbidden",
+    "Dangerous to ourselves/others"
+  ],
+  "relationship_code_map": {
+    "Positive": 0,
+    "Firmly Negative": 1,
+    "Object Non-functional": 2,
+    "Physical Obstacle": 3,
+    "Socially Awkward": 4,
+    "Socially Forbidden": 5,
+    "Dangerous to ourselves/others": 6
+  },
+  "instances": [
+    {
+      "instance_id": "000",
+      "object_name": "object",
+      "bbox_xyxy": [
+        3,
+        102,
+        539,
+        358
+      ],
+      "area": 61966,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "001",
+      "object_name": "object",
+      "bbox_xyxy": [
+        0,
+        18,
+        153,
+        325
+      ],
+      "area": 30823,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "002",
+      "object_name": "object",
+      "bbox_xyxy": [
+        62,
+        22,
+        239,
+        271
+      ],
+      "area": 21192,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "003",
+      "object_name": "object",
+      "bbox_xyxy": [
+        446,
+        48,
+        539,
+        315
+      ],
+      "area": 16461,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "004",
+      "object_name": "object",
+      "bbox_xyxy": [
+        110,
+        0,
+        539,
+        70
+      ],
+      "area": 15307,
+      "actions": {
+        "sit": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "run": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        },
+        "grasp": {
+          "relationship_label": "Firmly Negative",
+          "relationship_code": 1,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    }
+  ]
+}

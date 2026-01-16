@@ -1,0 +1,20 @@
+{
+  "object_name": "parked car",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Socially Awkward",
+      "explanation": "Sitting on a parked car in traffic is socially awkward and may disturb the driver or other people.",
+      "consequence": "It could lead to confrontations or being asked to move."
+    },
+    "run": {
+      "relationship_label": "Dangerous to ourselves/others",
+      "explanation": "Running between parked cars in traffic is dangerous due to potential moving vehicles and limited visibility.",
+      "consequence": "There is a high risk of being hit by a car."
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

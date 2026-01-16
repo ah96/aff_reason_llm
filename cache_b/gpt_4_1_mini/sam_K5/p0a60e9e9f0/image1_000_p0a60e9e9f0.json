@@ -1,0 +1,20 @@
+{
+  "object_name": "fish",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "A fish is not designed to support sitting as it is a living aquatic animal.",
+      "consequence": "Sitting on the fish would harm it and is not practical."
+    },
+    "run": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "A fish cannot be used for running as it is an aquatic animal and not a surface to run on.",
+      "consequence": "Attempting to run on or with the fish is impossible and meaningless."
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

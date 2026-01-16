@@ -1,0 +1,5 @@
+{
+  "object_name": "object",
+  "per_action": {},
+  "error": "Gemini returned no parts: {'candidates': [{'content': {'role': 'model'}, 'finishReason': 'MAX_TOKENS', 'index': 0}], 'usageMetadata': {'promptTokenCount': 896, 'totalTokenCount': 1917, 'promptTokensDetails': [{'modality': 'TEXT', 'tokenCount': 380}, {'modality': 'IMAGE', 'tokenCount': 516}], 'thoughtsTokenCount': 1021}, 'modelVersion': 'gemini-2.5-pro', 'responseId': '9ZBpaYa2L56fkdUPjNy6gA0'}"
+}

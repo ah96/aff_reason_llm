@@ -1,0 +1,20 @@
+{
+  "object_name": "yellow fish",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "The fish is too small and fragile to support the weight of a person.",
+      "consequence": "Attempting to sit on the fish would crush it and cause the person to fall."
+    },
+    "run": {
+      "relationship_label": "Firmly Negative",
+      "explanation": "",
+      "consequence": ""
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

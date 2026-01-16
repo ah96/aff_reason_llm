@@ -5,7 +5,7 @@ Experiment B Runner (SAM-only vs SAM+Saliency), paper-grade logging.
 Drop-in replacement for your current experiment_b_run.py:
 - Same main outputs consumed by experiment_b_eval_metrics.py
 - Adds robust logging (run config, timing, counts, per-instance diagnostics)
-- Keeps your dependencies: segment_anything, vision_llm_clients, adapter.load_model/predict_saliency
+- Keeps your dependencies: segment_anything, vision_llm_clients, adapter._load_model_bundle/predict_saliency
 
 Outputs per image and per LLM:
   - <stem>_<llm>_instances.json      (main output consumed by evaluator)
@@ -16,6 +16,14 @@ Outputs per image and per LLM:
 
 Run-level output per <mode>_K<k> folder:
   - run_config.json
+
+
+# only sam:
+python3 ./experiment_b/experiment_b_run.py   --images_dir ./images/   --outdir ./out_b   --llms ./experiment_b/configs/llms.json   --mode sam  --sam_ckpt ./sam_vit_h_4b8939.pth   --device cpu --Ks 5
+
+# sam + saliency:
+python3 ./experiment_b/experiment_b_run.py   --images_dir ./images/   --outdir ./out_b   --llms ./experiment_b/configs/llms.json   --mode sam_saliency --adapter ./experiment_b/ooal_saliency_adapter.py  --seen_ckpt ./ooal_models_amar/seen_best  --unseen_ckpt ./ooal_models_amar/unseen_best  --sam_ckpt ./sam_vit_h_4b8939.pth   --device cpu --Ks 5
+  
 """
 
 import io
@@ -50,15 +58,21 @@ except Exception:
 # ----------------------------
 def load_adapter(py_path: str):
     import importlib.util
+    import sys
     p = Path(py_path)
     spec = importlib.util.spec_from_file_location("aff_adapter", str(p))
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Failed to import adapter: {p}")
     mod = importlib.util.module_from_spec(spec)
+
+    # IMPORTANT: make dataclasses/type resolution work during exec_module
+    sys.modules[spec.name] = mod
+
     spec.loader.exec_module(mod)  # type: ignore
-    if not hasattr(mod, "load_model") or not hasattr(mod, "predict_saliency"):
-        raise RuntimeError("Adapter must define load_model() and predict_saliency().")
+    if not hasattr(mod, "_load_model_bundle") or not hasattr(mod, "predict_saliency"):
+        raise RuntimeError("Adapter must define _load_model_bundle() and predict_saliency().")
     return mod
+
 
 
 @contextmanager
@@ -319,8 +333,8 @@ def main():
         if not args.adapter:
             raise RuntimeError("--adapter is required for mode sam_saliency")
         adapter = load_adapter(args.adapter)
-        model_seen = adapter.load_model(args.seen_ckpt, args.device)
-        model_unseen = adapter.load_model(args.unseen_ckpt, args.device)
+        model_seen = adapter._load_model_bundle(args.seen_ckpt, args.device)
+        model_unseen = adapter._load_model_bundle(args.unseen_ckpt, args.device)
 
     # Enumerate images
     exts = {".jpg", ".jpeg", ".png", ".webp"}

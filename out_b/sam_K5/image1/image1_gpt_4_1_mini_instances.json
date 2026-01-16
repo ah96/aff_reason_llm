@@ -1,0 +1,185 @@
+{
+  "image": "images/image1.jpeg",
+  "mode": "sam",
+  "K": 5,
+  "actions": [
+    "sit",
+    "run",
+    "grasp"
+  ],
+  "relationship_categories": [
+    "Positive",
+    "Firmly Negative",
+    "Object Non-functional",
+    "Physical Obstacle",
+    "Socially Awkward",
+    "Socially Forbidden",
+    "Dangerous to ourselves/others"
+  ],
+  "relationship_code_map": {
+    "Positive": 0,
+    "Firmly Negative": 1,
+    "Object Non-functional": 2,
+    "Physical Obstacle": 3,
+    "Socially Awkward": 4,
+    "Socially Forbidden": 5,
+    "Dangerous to ourselves/others": 6
+  },
+  "instances": [
+    {
+      "instance_id": "000",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        0,
+        1,
+        499,
+        373
+      ],
+      "area": 149843,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish is not designed to support sitting as it is a living aquatic animal.",
+          "consequence": "Sitting on the fish would harm it and is not practical."
+        },
+        "run": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish cannot be used for running as it is an aquatic animal and not a surface to run on.",
+          "consequence": "Attempting to run on or with the fish is impossible and meaningless."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "001",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        35,
+        128,
+        425,
+        300
+      ],
+      "area": 34540,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish is not designed to support sitting.",
+          "consequence": "Attempting to sit on a fish would be uncomfortable and likely harm the fish."
+        },
+        "run": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish cannot be used as a surface or tool for running.",
+          "consequence": "Trying to run on or with a fish is impractical and impossible."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "002",
+      "object_name": "fish",
+      "bbox_xyxy": [
+        366,
+        20,
+        499,
+        124
+      ],
+      "area": 9209,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish is not designed to support sitting.",
+          "consequence": "Attempting to sit on a fish would be uncomfortable and likely harm the fish."
+        },
+        "run": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish cannot be used as a surface or tool for running.",
+          "consequence": "Trying to run on or with a fish is impractical and could cause injury."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "003",
+      "object_name": "fish tail",
+      "bbox_xyxy": [
+        35,
+        212,
+        282,
+        301
+      ],
+      "area": 7350,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish tail is not designed to support sitting.",
+          "consequence": "Attempting to sit on it would be ineffective and uncomfortable."
+        },
+        "run": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish tail cannot be used for running.",
+          "consequence": "It provides no support or function for running."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    },
+    {
+      "instance_id": "004",
+      "object_name": "fish tail",
+      "bbox_xyxy": [
+        35,
+        212,
+        120,
+        301
+      ],
+      "area": 4596,
+      "actions": {
+        "sit": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish tail is not designed to support sitting.",
+          "consequence": "Attempting to sit on it would be ineffective and uncomfortable."
+        },
+        "run": {
+          "relationship_label": "Object Non-functional",
+          "relationship_code": 2,
+          "explanation": "A fish tail cannot be used for running.",
+          "consequence": "It provides no support or function for running."
+        },
+        "grasp": {
+          "relationship_label": "Positive",
+          "relationship_code": 0,
+          "explanation": "",
+          "consequence": ""
+        }
+      }
+    }
+  ]
+}

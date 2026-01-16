@@ -1,0 +1,20 @@
+{
+  "object_name": "car",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    },
+    "run": {
+      "relationship_label": "Dangerous to ourselves/others",
+      "explanation": "Running on a busy road with cars stopped in traffic is hazardous.",
+      "consequence": "There is a high risk of being hit by a vehicle."
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

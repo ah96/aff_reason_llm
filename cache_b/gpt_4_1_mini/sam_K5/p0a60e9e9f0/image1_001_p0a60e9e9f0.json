@@ -1,0 +1,20 @@
+{
+  "object_name": "fish",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "A fish is not designed to support sitting.",
+      "consequence": "Attempting to sit on a fish would be uncomfortable and likely harm the fish."
+    },
+    "run": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "A fish cannot be used as a surface or tool for running.",
+      "consequence": "Trying to run on or with a fish is impractical and impossible."
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

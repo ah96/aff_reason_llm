@@ -1,0 +1,46 @@
+{
+  "sit": {
+    "000": {
+      "explanation": "A fish is not designed to support sitting as it is a living aquatic animal.",
+      "consequence": "Sitting on the fish would harm it and is not practical."
+    },
+    "001": {
+      "explanation": "A fish is not designed to support sitting.",
+      "consequence": "Attempting to sit on a fish would be uncomfortable and likely harm the fish."
+    },
+    "002": {
+      "explanation": "A fish is not designed to support sitting.",
+      "consequence": "Attempting to sit on a fish would be uncomfortable and likely harm the fish."
+    },
+    "003": {
+      "explanation": "A fish tail is not designed to support sitting.",
+      "consequence": "Attempting to sit on it would be ineffective and uncomfortable."
+    },
+    "004": {
+      "explanation": "A fish tail is not designed to support sitting.",
+      "consequence": "Attempting to sit on it would be ineffective and uncomfortable."
+    }
+  },
+  "run": {
+    "000": {
+      "explanation": "A fish cannot be used for running as it is an aquatic animal and not a surface to run on.",
+      "consequence": "Attempting to run on or with the fish is impossible and meaningless."
+    },
+    "001": {
+      "explanation": "A fish cannot be used as a surface or tool for running.",
+      "consequence": "Trying to run on or with a fish is impractical and impossible."
+    },
+    "002": {
+      "explanation": "A fish cannot be used as a surface or tool for running.",
+      "consequence": "Trying to run on or with a fish is impractical and could cause injury."
+    },
+    "003": {
+      "explanation": "A fish tail cannot be used for running.",
+      "consequence": "It provides no support or function for running."
+    },
+    "004": {
+      "explanation": "A fish tail cannot be used for running.",
+      "consequence": "It provides no support or function for running."
+    }
+  }
+}

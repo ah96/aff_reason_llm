@@ -1,0 +1,22 @@
+{
+  "sit": {
+    "001": {
+      "explanation": "The fish is too small and fragile to support the weight of a person.",
+      "consequence": "Attempting to sit on the fish would crush it."
+    },
+    "003": {
+      "explanation": "The fish is too small and fragile to support the weight of a person.",
+      "consequence": "Attempting to sit on the fish would crush it and cause the person to fall."
+    },
+    "004": {
+      "explanation": "The fish is too small and fragile to support the weight of a person.",
+      "consequence": "Attempting to sit on the fish would crush it and cause the person to fall."
+    }
+  },
+  "run": {
+    "003": {
+      "explanation": "The fish is a small, slippery object on the ground that could cause someone to trip.",
+      "consequence": "Running over the fish could lead to slipping, falling, and potential injury."
+    }
+  }
+}

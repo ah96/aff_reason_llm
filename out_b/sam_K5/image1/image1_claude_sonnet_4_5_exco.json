@@ -1,0 +1,16 @@
+{
+  "sit": {
+    "002": {
+      "explanation": "The fish is a dead animal lying on fabric, not a surface designed or suitable for sitting.",
+      "consequence": "Attempting to sit would damage the fish and create an unsanitary mess."
+    },
+    "003": {
+      "explanation": "The fish is a dead animal lying on a tarp, not a surface designed for sitting.",
+      "consequence": "Attempting to sit would crush the fish and be unhygienic."
+    },
+    "004": {
+      "explanation": "The fish is a small, slippery object lying on a soft surface that cannot support a person's weight for sitting.",
+      "consequence": "Attempting to sit would crush the fish and create an unstable, unsanitary surface."
+    }
+  }
+}

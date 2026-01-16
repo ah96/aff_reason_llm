@@ -1,0 +1,20 @@
+{
+  "object_name": "fish tail",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "A fish tail is not designed to support sitting.",
+      "consequence": "Attempting to sit on it would be ineffective and uncomfortable."
+    },
+    "run": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "A fish tail cannot be used for running.",
+      "consequence": "It provides no support or function for running."
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

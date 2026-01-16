@@ -1,0 +1,45 @@
+{
+  "timestamp_utc": "2026-01-16T01:09:21+00:00",
+  "mode": "sam",
+  "K": 5,
+  "Ks_all": [
+    5
+  ],
+  "actions": [
+    "sit",
+    "run",
+    "grasp"
+  ],
+  "seed": 42,
+  "prompt_hash": "0a60e9e9f0",
+  "sam_type": "vit_h",
+  "sam_ckpt": "./sam_vit_h_4b8939.pth",
+  "sam_params": {
+    "points_per_side": 32,
+    "pred_iou_thresh": 0.88,
+    "stability_score_thresh": 0.92,
+    "crop_n_layers": 1,
+    "crop_n_points_downscale_factor": 2,
+    "min_mask_region_area": 256
+  },
+  "device": "cpu",
+  "max_sam_masks": 50,
+  "saliency_enabled": false,
+  "adapter": "",
+  "seen_ckpt": "",
+  "unseen_ckpt": "",
+  "min_mask_score": 0.0,
+  "llms": [
+    "gemini_2_5_pro",
+    "gpt_4_1_mini",
+    "claude_sonnet_4_5"
+  ],
+  "platform": {
+    "python": "3.10.12",
+    "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "git_commit": "5981324833efb11c6bd991c3c1851d951beeb2c2",
+    "cuda_available": false,
+    "gpu_name": "none",
+    "torch_version": "2.9.0+cu128"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "object_name": "object",
+  "per_action": {},
+  "error": "LLM did not return JSON. Output:\n{\n  \"object_name\": \"car\",\n  \"per_action\": {\n    \"sit\": {\n      \"relationship_label\": \"Socially Awkward\",\n      \"explanation\": \"Sitting on the"
+}

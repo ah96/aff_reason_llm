@@ -1,0 +1,20 @@
+{
+  "object_name": "dead fish",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Object Non-functional",
+      "explanation": "The fish is a dead animal lying on a tarp, not a surface designed for sitting.",
+      "consequence": "Attempting to sit would crush the fish and be unhygienic."
+    },
+    "run": {
+      "relationship_label": "Firmly Negative",
+      "explanation": "",
+      "consequence": ""
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}

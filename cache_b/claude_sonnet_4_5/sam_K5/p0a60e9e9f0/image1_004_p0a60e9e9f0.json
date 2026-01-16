@@ -1,0 +1,20 @@
+{
+  "object_name": "dead fish",
+  "per_action": {
+    "sit": {
+      "relationship_label": "Physical Obstacle",
+      "explanation": "The fish is a small, slippery object lying on a soft surface that cannot support a person's weight for sitting.",
+      "consequence": "Attempting to sit would crush the fish and create an unstable, unsanitary surface."
+    },
+    "run": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    },
+    "grasp": {
+      "relationship_label": "Positive",
+      "explanation": "",
+      "consequence": ""
+    }
+  }
+}
