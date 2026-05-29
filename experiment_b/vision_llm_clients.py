@@ -12,7 +12,7 @@ class LLMConfig:
     """
     Provider-agnostic LLM configuration.
 
-    Expected JSON fields (see llms_updated.json for an example):
+    Expected JSON fields:
       - name: human-readable name used for filenames / tables
       - provider: "openai_compat" | "openai" | "anthropic" | "gemini"
       - model: provider model id
@@ -20,7 +20,7 @@ class LLMConfig:
       - base_url: (openai/openai_compat only) e.g. "https://api.openai.com/v1" or "http://localhost:8000/v1"
       - temperature: float (default 0.0)
       - max_tokens: int (default 256)
-      - supports_vision: bool (default True). If False, the runner will skip this model for image inputs.
+      - supports_vision: bool (default True). If False, runner skips this model for image inputs.
     """
     name: str
     provider: str
@@ -39,9 +39,7 @@ def _resolve_api_key(k: str) -> str:
 
 
 def _extract_json(text: str) -> Dict[str, Any]:
-    """
-    Robust JSON extraction: accept exact JSON or a response that contains a JSON object somewhere.
-    """
+    """Accept exact JSON or a response containing a JSON object (handles markdown fences)."""
     text = (text or "").strip()
     try:
         return json.loads(text)
@@ -60,11 +58,11 @@ class VisionLLMClient:
 
 class OpenAICompatVisionClient(VisionLLMClient):
     """
-    OpenAI Chat Completions-compatible client (works for OpenAI and most OpenAI-compatible servers, e.g. vLLM).
+    OpenAI Chat Completions-compatible client (works for OpenAI and OpenAI-compatible servers,
+    e.g. vLLM, LM Studio, Together AI).
 
-    We intentionally use /chat/completions rather than /responses because:
-      - it is widely supported by OpenAI-compatible servers
-      - it supports vision via message content with image_url for OpenAI models
+    Uses /chat/completions with image_url content blocks for vision.
+    response_format=json_object is only sent to openai.com (not all servers support it).
     """
     def __init__(self, model: str, api_key: str, base_url: str, temperature: float = 0.0, max_tokens: int = 256):
         self.model = model
@@ -72,11 +70,9 @@ class OpenAICompatVisionClient(VisionLLMClient):
         self.base_url = (base_url or "https://api.openai.com/v1").rstrip("/")
         self.temperature = float(temperature)
         self.max_tokens = int(max_tokens)
+        self._is_openai = "openai.com" in self.base_url
 
-    def complete_json(self, system: str, user: str, images_b64png: list[str]) -> dict:
-        import requests, json
-
-        # IMPORTANT: OpenAI expects a "data:" URL for base64 images
+    def complete_json(self, *, system: str, user: str, images_b64png: List[str]) -> Dict[str, Any]:
         parts = [{"type": "text", "text": user}]
         for b64 in images_b64png:
             parts.append({
@@ -90,11 +86,14 @@ class OpenAICompatVisionClient(VisionLLMClient):
                 {"role": "system", "content": system},
                 {"role": "user", "content": parts},
             ],
-            "response_format": {"type": "json_object"},
-            "temperature": 0.0,
+            "temperature": self.temperature,
         }
 
-        # Token parameter depends on model family
+        # json_object mode only for OpenAI's own endpoint (not all servers support it)
+        if self._is_openai:
+            payload["response_format"] = {"type": "json_object"}
+
+        # Token parameter differs between model families
         if self.model.startswith("gpt-5"):
             payload["max_completion_tokens"] = self.max_tokens
         else:
@@ -108,12 +107,10 @@ class OpenAICompatVisionClient(VisionLLMClient):
         )
 
         if r.status_code != 200:
-            # Print the actual OpenAI error message (this is vital!)
             raise RuntimeError(f"HTTP {r.status_code}: {r.text}")
 
-        data = r.json()
-        content = data["choices"][0]["message"]["content"]
-        return json.loads(content)
+        content = r.json()["choices"][0]["message"]["content"]
+        return _extract_json(content)
 
 
 class ClaudeVisionClient(VisionLLMClient):
@@ -152,10 +149,7 @@ class ClaudeVisionClient(VisionLLMClient):
         blocks = data.get("content", [])
         if not blocks:
             raise ValueError(f"Claude returned no content: {data}")
-        text = ""
-        for b in blocks:
-            if b.get("type") == "text":
-                text += b.get("text", "")
+        text = "".join(b.get("text", "") for b in blocks if b.get("type") == "text")
         return _extract_json(text)
 
 
@@ -172,7 +166,6 @@ class GeminiVisionClient(VisionLLMClient):
             model = "models/" + model
         url = f"https://generativelanguage.googleapis.com/v1beta/{model}:generateContent?key={self.api_key}"
 
-        # Gemini expects inline bytes; decode base64 -> bytes
         parts: List[Dict[str, Any]] = [{"text": system + "\n\n" + user}]
         for b64 in images_b64png:
             if isinstance(b64, (bytes, bytearray)):
@@ -198,8 +191,7 @@ class GeminiVisionClient(VisionLLMClient):
         parts_out = candidates[0].get("content", {}).get("parts", [])
         if not parts_out:
             raise ValueError(f"Gemini returned no parts: {data}")
-        text = parts_out[0].get("text", "")
-        return _extract_json(text)
+        return _extract_json(parts_out[0].get("text", ""))
 
 
 def load_llms(path: str) -> List[LLMConfig]:

@@ -365,7 +365,9 @@ def main():
     ap.add_argument("--min_mask_score", type=float, default=0.0)
 
     # Actions
-    ap.add_argument("--actions", nargs="+", default=["sit", "run", "grasp"])
+    ap.add_argument("--actions", nargs="+",
+                    default=["sit_on", "hold", "carry", "cut", "throw", "ride"],
+                    help="Action/affordance names. Must match OOAL SEEN_AFF names when using dataset_saliency mode.")
 
     # Optional saliency adapter
     ap.add_argument("--adapter", default="", help="Required for dataset_saliency")

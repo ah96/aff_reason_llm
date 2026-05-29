@@ -264,7 +264,9 @@ def main():
     ap.add_argument("--Ks", nargs="+", type=int, default=[5, 10, 20], help="Region budgets K to evaluate.")
 
     # Actions
-    ap.add_argument("--actions", nargs="+", default=["sit", "run", "grasp"])
+    ap.add_argument("--actions", nargs="+",
+                    default=["sit_on", "hold", "carry", "cut", "throw", "ride"],
+                    help="Action/affordance names. Must match OOAL SEEN_AFF names when using sam_saliency mode.")
 
     # SAM
     ap.add_argument("--sam_type", default="vit_h", choices=["vit_h", "vit_l", "vit_b"])

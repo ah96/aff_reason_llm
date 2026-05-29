@@ -15,9 +15,8 @@ from ade_parsing import (
 )
 
 from llm_clients import load_llm_configs, make_client
-
-# from metrics_relationship import compute_macc_metrics
-# from metrics_caption import compute_caption_metrics
+from metrics_relationship import compute_macc_metrics
+from metrics_caption import compute_caption_metrics
 
 
 # -----------------------------
@@ -122,7 +121,6 @@ def build_ann_name_list(ade_ann_dir: str) -> List[str]:
     root = ade_ann_dir
     if not os.path.isdir(root):
         raise RuntimeError(f"ADE annotation split not found: {root}")
-    # print("\n root: ", root)
 
     idx = []
     for dp, _, fns in os.walk(root):
@@ -159,41 +157,36 @@ Predict relationship and explanation if needed.
 # -----------------------------
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--ade_ann_dir", required=True)
-    ap.add_argument("--objectinfo150", required=True)
-    ap.add_argument("--ade_aff_dir", required=True)
-    ap.add_argument("--llms", required=True)
-    # ap.add_argument("--split", choices=["training", "validation", "testing"], required=True)
-    ap.add_argument("--actions", default="sit,grasp,run")
-    ap.add_argument("--limit_images", type=int, default=None)
-    ap.add_argument("--cache_dir", default="cache_llm")
+    ap.add_argument("--ade_ann_dir", required=True,
+                    help="Path to ADE20K annotation PNGs directory.")
+    ap.add_argument("--objectinfo150", required=True,
+                    help="Path to ADE20K objectInfo150.txt.")
+    ap.add_argument("--ade_aff_dir", required=True,
+                    help="Path to flat ADE-Affordance directory (*_relationship.txt, *_exco.json).")
+    ap.add_argument("--llms", required=True,
+                    help="Path to llms.json config file.")
+    ap.add_argument("--actions", default="sit,run,grasp",
+                    help="Comma-separated actions to evaluate. Must match ADE-Affordance annotation columns.")
+    ap.add_argument("--limit_images", type=int, default=None,
+                    help="Cap number of images (useful for quick sanity checks).")
+    ap.add_argument("--cache_dir", default="cache_llm",
+                    help="Directory to cache LLM responses (hash-keyed JSON files).")
     args = ap.parse_args()
 
     actions = [a.strip() for a in args.actions.split(",") if a.strip()]
-    # print("\n actions: ", actions)
 
     id2name = load_objectinfo150(args.objectinfo150)
-    # print("\n id2name: ", id2name)
     ann_name_list = build_ann_name_list(args.ade_ann_dir)
     ann_name_list.sort()
-    # print("\n len(ann_name_list): ", len(ann_name_list))
-    # print("\n ann_name_list: ", ann_name_list)
     aff_index = build_aff_index_flat(args.ade_aff_dir)
     aff_index = dict(sorted(aff_index.items()))
-    # print("\n aff_index: ", aff_index)
-    # print("\n len(aff_index): ", len(aff_index))
 
     image_names = sorted(set(ann_name_list) & set(aff_index))
-    # print("\n image_names: ", image_names)
-    # print("\n len(image_names): ", len(image_names))
     if args.limit_images:
         image_names = image_names[: args.limit_images]
-    # print("\n image_names: ", image_names)
-    
+
     llm_cfgs = load_llm_configs(args.llms)
-    # print("\n llm_cfgs: ", llm_cfgs)
     clients = [(cfg.name, make_client(cfg)) for cfg in llm_cfgs]
-    # print("\n clients: ", clients)
 
     # -----------------------------
     # Accumulators
@@ -208,37 +201,22 @@ def main():
             "n_rel": 0,
             "n_text": 0,
         }
-    # print("\n results: ", results)
-    
+
     # -----------------------------
-    # Single evaluation loop
+    # Evaluation loop
     # -----------------------------
     for image_name in tqdm(image_names, desc="Images"):
-        print("\n image_name: ", image_name)
         ann = decode_ade_annotation(args.ade_ann_dir, image_name)
-        # print("\n ann: ", ann)
-        print(np.unique(ann))
-        # ann is the loaded PNG
-        """
-        if ann.ndim == 2 and ann.max() <= 255:
-            raise RuntimeError(
-                "ADE annotation is class-only (no instance IDs). "
-                "ADE-Affordance requires instance-level ADE20K annotations."
-            )
-        """
         instances = extract_instances_from_ade_png(ann, id2name)
-        print("\n instances: ", instances)
-        print("\n len(instances): ", len(instances))
-
         adjacency = compute_touching_adjacency(instances)
-        print("\n adjacency: ", adjacency)
 
-        rel_map = load_relationship_file(aff_index[image_name]["rel"])
-        print("\n rel_map: ", rel_map)
-        exco_map = load_exco_json(aff_index[image_name]["exco"]) if aff_index[image_name]["exco"] else {}
-        print("\n exco_map: ", exco_map)
+        rel_map = load_relationship_file(aff_index[image_name]["rel"], actions=actions)
+        exco_map = (
+            load_exco_json(aff_index[image_name]["exco"])
+            if aff_index[image_name]["exco"]
+            else {}
+        )
 
-        return 0
         for iid, inst in instances.items():
             if iid not in rel_map:
                 continue
@@ -264,7 +242,6 @@ def main():
                     continue
 
                 gt_rel = int(rel_map[iid][action])
-
                 prompt = build_user_prompt(action, target, neighbors)
 
                 for llm_name, client in clients:
@@ -286,7 +263,6 @@ def main():
                     results[llm_name]["pred_rel"].append(pred_rel)
                     results[llm_name]["n_rel"] += 1
 
-                    # ---- text metrics ONLY for exception cases with EXCO ----
                     if 2 <= gt_rel <= 6 and action in exco_map and iid in exco_map[action]:
                         gt = exco_map[action][iid]
                         expl_refs = to_refs(gt.get("explanation"))
@@ -302,7 +278,6 @@ def main():
                             )
                         results[llm_name]["n_text"] += 1
 
-    return 0 
     # -----------------------------
     # Reporting
     # -----------------------------

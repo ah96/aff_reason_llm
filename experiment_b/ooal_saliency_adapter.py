@@ -14,7 +14,7 @@ It mirrors your `test.py` logic:
 
 Expected usage in Experiment B (conceptually):
     adapter = OOALSaliencyAdapter(seen_ckpt=..., unseen_ckpt=..., device="cuda")
-    saliency = adapter.predict_saliency(image_rgb, actions=["sit", "grasp", ...])
+    saliency = adapter.predict_saliency(image_rgb, actions=["sit_on", "hold", "carry", ...])
     # saliency[action] is HxW float32 in [0,1] (normalized)
 
 Notes:

@@ -9,10 +9,10 @@
     "max_tokens": 256
   },
   {
-    "name": "claude_sonnet_4_5",
+    "name": "claude_sonnet_4_6",
     "provider": "anthropic",
     "api_key": "ENV:ANTHROPIC_API_KEY",
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "temperature": 0.0,
     "max_tokens": 256
   },

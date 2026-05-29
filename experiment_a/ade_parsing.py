@@ -1,7 +1,7 @@
 import os
 import json
 from dataclasses import dataclass
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 from PIL import Image
@@ -162,28 +162,40 @@ def compute_touching_adjacency(instances: Dict[int, InstanceInfo]) -> Dict[int, 
     return adjacency
 
 
-def load_relationship_file(path: str) -> Dict[int, Dict[str, int]]:
+def load_relationship_file(
+    path: str,
+    actions: Optional[List[str]] = None,
+) -> Dict[int, Dict[str, int]]:
     """
     Parses *_relationship.txt.
-    Returns: instance_id -> { 'sit':label, 'run':label, 'grasp':label }
-    File format lines like: "209 # 2 # 6 # 0"
+    Returns: instance_id -> {action: label_code, ...}
+    File format: "instance_id # code0 # code1 # ... # codeN"
+
+    Args:
+        path: path to the *_relationship.txt file.
+        actions: ordered action names matching the columns after the instance id.
+                 Defaults to ["sit", "run", "grasp"] (original ADE-Affordance annotation order).
     """
+    if actions is None:
+        actions = ["sit", "run", "grasp"]
+
     rel: Dict[int, Dict[str, int]] = {}
-    actions = ["sit", "run", "grasp"]
+    n_actions = len(actions)
+
     with open(path, "r", encoding="utf-8") as f:
         for raw in f:
             line = raw.strip()
             if not line:
                 continue
             parts = [p.strip() for p in line.split("#")]
-            if len(parts) < 4:
+            if len(parts) < n_actions + 1:
                 continue
             try:
                 iid = int(parts[0])
-                vals = [int(parts[1]), int(parts[2]), int(parts[3])]
+                vals = [int(parts[k + 1]) for k in range(n_actions)]
             except Exception:
                 continue
-            rel[iid] = {actions[k]: vals[k] for k in range(3)}
+            rel[iid] = {actions[k]: vals[k] for k in range(n_actions)}
     return rel
 
 

@@ -2,7 +2,7 @@
 import os
 import json
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, List, Tuple
+from typing import Any, Dict, Optional, List
 
 import requests
 
@@ -13,11 +13,9 @@ class LLMConfig:
     provider: str  # "openai_compat" | "anthropic" | "gemini"
     model: str
 
-    # OpenAI-compatible settings
     base_url: str = "https://api.openai.com/v1"
     api_key: str = "EMPTY"
 
-    # Shared generation settings
     temperature: float = 0.0
     max_tokens: int = 256
     timeout_s: int = 60
@@ -39,9 +37,7 @@ def _resolve_api_key(value: str) -> str:
 
 
 def _extract_first_json_object(text: str) -> Dict[str, Any]:
-    """
-    Tries strict json.loads; if that fails, extracts the first {...} block.
-    """
+    """Tries strict json.loads; if that fails, extracts the first {...} block."""
     text = text.strip()
     try:
         return json.loads(text)
@@ -60,18 +56,13 @@ class BaseClient:
 
 class OpenAICompatibleClient(BaseClient):
     """
-    Works for:
-      - OpenAI API
-      - vLLM --openai-api
-      - LM Studio OpenAI compatible server
-      - OpenRouter (OpenAI-compatible)
-      - Together (OpenAI-compatible)
-      - Groq (OpenAI-compatible)
+    Works for: OpenAI API, vLLM, LM Studio, OpenRouter, Together, Groq.
     """
     def __init__(self, cfg: LLMConfig):
         self.cfg = cfg
         self.base_url = cfg.base_url.rstrip("/")
         self.api_key = _resolve_api_key(cfg.api_key)
+        self._is_openai = "openai.com" in self.base_url
 
     def chat_json(self, system: str, user: str) -> Dict[str, Any]:
         url = self.base_url + "/chat/completions"
@@ -88,18 +79,17 @@ class OpenAICompatibleClient(BaseClient):
                 {"role": "user", "content": user},
             ],
         }
+        if self._is_openai:
+            payload["response_format"] = {"type": "json_object"}
 
         r = requests.post(url, headers=headers, json=payload, timeout=int(self.cfg.timeout_s))
         r.raise_for_status()
-        data = r.json()
-        content = data["choices"][0]["message"]["content"]
+        content = r.json()["choices"][0]["message"]["content"]
         return _extract_first_json_object(content)
 
 
 class AnthropicClaudeClient(BaseClient):
-    """
-    Anthropic Messages API: https://api.anthropic.com/v1/messages
-    """
+    """Anthropic Messages API: https://api.anthropic.com/v1/messages"""
     def __init__(self, cfg: LLMConfig):
         self.cfg = cfg
         self.api_key = _resolve_api_key(cfg.api_key)
@@ -122,20 +112,17 @@ class AnthropicClaudeClient(BaseClient):
         r.raise_for_status()
         data = r.json()
 
-        # Anthropic returns content as a list of blocks, usually first is text
         blocks = data.get("content", [])
         if not blocks:
             raise ValueError(f"Anthropic response missing content: {data}")
-        text = blocks[0].get("text", "")
+        text = "".join(b.get("text", "") for b in blocks if b.get("type") == "text")
         return _extract_first_json_object(text)
 
 
 class GeminiClient(BaseClient):
     """
-    Google AI Studio (Generative Language API) style endpoint:
+    Google AI Studio (Generative Language API):
       https://generativelanguage.googleapis.com/v1beta/models/<model>:generateContent?key=...
-    Example model string: "gemini-1.5-pro" or "gemini-1.5-flash"
-    We'll normalize to "models/<model>" if not provided.
     """
     def __init__(self, cfg: LLMConfig):
         self.cfg = cfg
@@ -146,21 +133,17 @@ class GeminiClient(BaseClient):
         self.model = model
 
     def chat_json(self, system: str, user: str) -> Dict[str, Any]:
-        url = f"https://generativelanguage.googleapis.com/v1beta/{self.model}:generateContent"
-        url = url + f"?key={self.api_key}"
-
-        # Gemini doesn't have a separate system role in the same way;
-        # we prepend system instructions.
-        prompt = system + "\n\n" + user
+        url = f"https://generativelanguage.googleapis.com/v1beta/{self.model}:generateContent?key={self.api_key}"
 
         payload = {
             "contents": [{
                 "role": "user",
-                "parts": [{"text": prompt}]
+                "parts": [{"text": system + "\n\n" + user}]
             }],
             "generationConfig": {
                 "temperature": float(self.cfg.temperature),
                 "maxOutputTokens": int(self.cfg.max_tokens),
+                "responseMimeType": "application/json",
             }
         }
 
@@ -174,8 +157,7 @@ class GeminiClient(BaseClient):
         parts = candidates[0].get("content", {}).get("parts", [])
         if not parts:
             raise ValueError(f"Gemini response missing parts: {data}")
-        text = parts[0].get("text", "")
-        return _extract_first_json_object(text)
+        return _extract_first_json_object(parts[0].get("text", ""))
 
 
 def make_client(cfg: LLMConfig) -> BaseClient:
@@ -190,45 +172,6 @@ def make_client(cfg: LLMConfig) -> BaseClient:
 
 
 def load_llm_configs(path: str) -> List[LLMConfig]:
-    """
-    llms.json format (list):
-    [
-      {
-        "name": "gpt_4_1_mini",
-        "provider": "openai_compat",
-        "base_url": "https://api.openai.com/v1",
-        "api_key": "ENV:OPENAI_API_KEY",
-        "model": "gpt-4.1-mini",
-        "temperature": 0.0,
-        "max_tokens": 256
-      },
-      {
-        "name": "claude_sonnet",
-        "provider": "anthropic",
-        "api_key": "ENV:ANTHROPIC_API_KEY",
-        "model": "claude-3-5-sonnet-20240620",
-        "temperature": 0.0,
-        "max_tokens": 256
-      },
-      {
-        "name": "gemini_pro",
-        "provider": "gemini",
-        "api_key": "ENV:GEMINI_API_KEY",
-        "model": "gemini-1.5-pro",
-        "temperature": 0.0,
-        "max_tokens": 256
-      },
-      {
-        "name": "local_llama_vllm",
-        "provider": "openai_compat",
-        "base_url": "http://localhost:8000/v1",
-        "api_key": "EMPTY",
-        "model": "meta-llama/Llama-3.1-8B-Instruct",
-        "temperature": 0.0,
-        "max_tokens": 256
-      }
-    ]
-    """
     with open(path, "r", encoding="utf-8") as f:
         raw = json.load(f)
 

@@ -1,19 +1,26 @@
-pip install -r requirements.txt
-# python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
+# Experiment A: Text-Only Affordance Evaluation on ADE-Affordance GT
 
-# first run this script to flatten extract ADE-Affordance dataset
-python3 extract_ade_affordance_flat.py   --zip ./datasets/ADE-Affordance.zip   --out ./ADE-Affordance-flat   --paired_only false
+# Install dependencies
+pip install -r ../requirements.txt
+# Text metrics also require:
+python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
 
-
+# Set API keys
 export OPENAI_API_KEY="..."
 export ANTHROPIC_API_KEY="..."
-export GEMINI_API_KEY="..."
+export GOOGLE_API_KEY="..."
 
-python eval_experiment_a.py \
-  --ade_ann_dir /path/to/ADE20K/annotations/training \
-  --objectinfo150 /path/to/objectInfo150.txt \
-  --aff_dir /path/to/ADE-Affordance/train \
+# Run evaluation
+# --ade_ann_dir : ADE20K annotation PNGs directory (RGB-encoded instance masks)
+# --objectinfo150 : path to ADE20K's objectInfo150.txt (class name lookup)
+# --ade_aff_dir : flat ADE-Affordance directory with *_relationship.txt and *_exco.json files
+# --actions : comma-separated action names matching annotation column order (default: sit,run,grasp)
+
+python3 eval_experiment_a.py \
+  --ade_ann_dir /path/to/ADE20K/annotations/validation \
+  --objectinfo150 /path/to/ADE20K/objectInfo150.txt \
+  --ade_aff_dir /path/to/ADE-Affordance-flat \
   --llms configs/llms.json \
-  --split train \
-  --limit_images 50 \
-  --only_exception_text
+  --actions sit,run,grasp \
+  --limit_images 100 \
+  --cache_dir cache_a
