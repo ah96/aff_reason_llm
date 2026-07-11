@@ -82,5 +82,8 @@ experiment_a/results/*.jsonl
 # Experiment B — SAM checkpoints (auto-downloaded) + archived dead code
 experiment_b/checkpoints/
 experiment_b/legacy/
+# Exp B raw predictions (archived separately, like Exp A). Keeps agree_*.json summaries +
+# snapshot_results.py + make_example.py + results/README.md trackable.
+experiment_b/results/*.jsonl
 # NOTE: experiment_b_bundle/images/ is intentionally NOT ignored — the 200 scenes
 # are committed so the lab PC gets them on `git pull`.

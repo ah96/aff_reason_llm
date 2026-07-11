@@ -84,16 +84,27 @@ Each prints `agreement_Nway`, `agreement_pairwise`, per-model `consensus_acc`, a
 - `agree_area_K3.json`  → `tab:main` (per-model consensus + 4-way agreement) and the SAM 2 row of `tab:selection`.
 - `agree_concept_K3.json` → the SAM 3 row of `tab:selection`.
 
-## Step 4 — Commit & push after the run
-The **code** was already pushed; after the run you only version the small **result summaries**. The raw
-predictions and cache are git-ignored (archive them separately, like Exp A).
+## Step 4 — Snapshot results, commit & (optionally) a figure
+Snapshot the raw predictions + summaries into the tracked `results/` folder (so every statistic and
+example is reproducible later with no cache/API), then commit the small parts.
 ```bash
-git add experiment_b/agree_area_K3.json experiment_b/agree_concept_K3.json
-git commit -m "Exp B agreement results (area + concept, K=3)"
+python3 snapshot_results.py            # out/*.jsonl + agree_*.json -> results/ (prints row counts)
+
+# optional: build a qualitative example for the paper (image + SAM bbox + all 4 models' outputs)
+python3 make_example.py --mode sam2_area --K 3 --list                          # find good cases
+python3 make_example.py --mode sam2_area --K 3 --image ADE_val_00000013.jpg --region 0 --action sit_on
+
+# commit the small, versionable parts:
+git add experiment_b/results/agree_*.json experiment_b/results/README.md
+git commit -m "Exp B results: agreement summaries (area + concept, K=3)"
 git push
 ```
-**Git-ignored — do NOT commit (archive separately):** `../experiment_b_bundle/out/` (raw per-model
-`*.jsonl`) and `cache_b/`. Nothing else needs committing unless you changed code.
+Transcribe `results/agree_area_K3.json` / `results/agree_concept_K3.json` into `tab:main` and
+`tab:selection`. Recompute anything later with
+`python3 experiment_b_agreement.py --outdir results --mode sam2_area --K 3 --models $STD`.
+
+**Git-ignored — do NOT commit (archive separately, like Exp A):** the raw `results/*.jsonl` (and their
+source `../experiment_b_bundle/out/`) and `cache_b/`. The `agree_*.json` + README + scripts are tracked.
 
 ## How long does it take?
 Full run ≈ **14.4k area + ~8–14k concept ≈ 20–28k VLM calls**, plus fast SAM (~10–40 min total).
