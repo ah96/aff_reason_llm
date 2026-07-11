@@ -165,8 +165,11 @@ class _Sam3:
     def __init__(self, ckpt, device, conf=0.25):
         from ultralytics.models.sam import SAM3SemanticPredictor
         ckpt = _resolve_sam3_ckpt(ckpt)                      # bare 'sam3.pt' -> HF cache path
+        # save=False etc.: we only need the boxes/masks in-memory; don't write annotated images to
+        # runs/segment/ on every call (thousands of files + disk churn over the full run).
         self.pred = SAM3SemanticPredictor(overrides=dict(model=ckpt, conf=conf, device=device,
-                                                         task="segment", mode="predict", verbose=False))
+                                                         task="segment", mode="predict", verbose=False,
+                                                         save=False, save_txt=False, save_crop=False))
 
     def segment(self, image, prompts):
         self.pred.set_image(image)

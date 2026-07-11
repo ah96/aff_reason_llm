@@ -26,10 +26,17 @@ cd experiment_b
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 pip install -r requirements.txt
 
-# 2) SAM weights (auto-download by name via ultralytics).
-python download_sam.py                 # SAM 2 (ungated) + SAM 3
-#   SAM 3 (sam3.pt) is GATED on HuggingFace: request access at
-#   https://huggingface.co/facebook/sam3 , then:  hf auth login   (or: export HF_TOKEN=hf_xxx)
+# 2) SAM weights. SAM 2 auto-downloads by name via ultralytics; SAM 3 is GATED on HuggingFace.
+python download_sam.py                 # SAM 2 (ungated) + SAM 3 (facebook/sam3)
+#   For SAM 3: request access at https://huggingface.co/facebook/sam3 , then `hf auth login`
+#   (or `export HF_TOKEN=hf_xxx`). The runner resolves the bare `sam3.pt` to the HF cache path.
+
+# 2b) SAM 3 ONLY: its text encoder needs ultralytics' CLIP fork (a *callable* tokenizer). That fork's
+#     pip build is broken (installs an empty 'UNKNOWN' wheel), so install the module files directly:
+pip install --user git+https://github.com/openai/CLIP.git          # creates the clip/ package dir
+git clone --depth 1 https://github.com/ultralytics/CLIP.git /tmp/ultra_clip
+cp -r /tmp/ultra_clip/clip/* "$(python3 -c 'import clip,os;print(os.path.dirname(clip.__file__))')"/
+python3 -c "from clip.simple_tokenizer import SimpleTokenizer as T; assert callable(T()); print('CLIP ok')"
 
 # 3) API keys (same as Exp A). Gemini uses its FREE tier (rate-limited, ~$0).
 export OPENAI_API_KEY=...  ANTHROPIC_API_KEY=...  GEMINI_API_KEY=...  OPENROUTER_API_KEY=...
@@ -55,6 +62,9 @@ on load, it's the gated checkpoint — re-do `download_sam.py --only sam3` after
 ## Step 2 — Full run (4 models, K=3, all 200 images)
 Run **area-mode first** (both tables need it), then concept. `--workers 8` speeds the paid models.
 Interruptible: Ctrl+C any time, re-run the SAME command to resume (cached calls are skipped, $0).
+
+> **GPU:** run the two modes **sequentially, not at once** — SAM 2 and SAM 3 together exceed a 16 GB
+> card (CUDA OOM silently drops regions). Let the area run finish, then start concept.
 ```bash
 # area-ranked baseline (SAM 2)   ~$46 with GPT-5.5 Flex
 python experiment_b_run_v2.py --mode sam2_area    --K 3 --models $STD --device cuda --workers 8
