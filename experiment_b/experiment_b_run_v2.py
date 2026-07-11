@@ -94,14 +94,16 @@ def provider_sam2_area(image, actions, K, sam2=None, **kw):
 
 def provider_sam3_concept(image, actions, K, sam3=None, concepts=None, **kw):
     """SAM 3 concept segmentation -> per action, its KB concepts; top-K by confidence.
-    Each returned instance is tied to the action whose concepts matched it."""
+    Each returned instance is tied to the action whose concepts matched it.
+    The image is encoded ONCE and reused across all actions (SAM's encode-once / prompt-many design)."""
     out = []
     rid = 0
+    sam3.set_image(image)                                   # encode once; reused by segment_text below
     for action in actions:
         prompts = concepts.get(action, [])
         if not prompts:
             continue
-        dets = sam3.segment(image, prompts)                 # -> list of {bbox, score}
+        dets = sam3.segment_text(prompts)                   # -> list of {bbox, score}, reuses image features
         for d in sorted(dets, key=lambda d: d["score"], reverse=True)[:K]:
             out.append({"region_id": rid, "bbox": d["bbox"], "actions": [action]})
             rid += 1
@@ -171,9 +173,12 @@ class _Sam3:
                                                          task="segment", mode="predict", verbose=False,
                                                          save=False, save_txt=False, save_crop=False))
 
-    def segment(self, image, prompts):
+    def set_image(self, image):
+        """Encode the image ONCE (SAM 3 caches its features); reuse across every action's prompts."""
         self.pred.set_image(image)
-        res = self.pred(text=list(prompts))
+
+    @staticmethod
+    def _parse(res):
         r = res[0] if isinstance(res, (list, tuple)) else res
         out = []
         boxes = getattr(r, "boxes", None)
@@ -187,6 +192,15 @@ class _Sam3:
             for d in _masks_to_boxes(r):
                 out.append({"bbox": d["bbox"], "score": 1.0})
         return out
+
+    def segment_text(self, prompts):
+        """Concept-segment for one prompt set, reusing the image set by set_image() (no re-encode)."""
+        return self._parse(self.pred(text=list(prompts)))
+
+    def segment(self, image, prompts):
+        """Convenience: encode + segment in one call (single-shot / smoke path)."""
+        self.set_image(image)
+        return self.segment_text(prompts)
 
 
 def read_json(p):

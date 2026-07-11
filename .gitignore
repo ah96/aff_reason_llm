@@ -31,6 +31,8 @@ out_b/
 outputs/
 cache_b/
 experiment_b_bundle/out/
+# ultralytics SAM/YOLO prediction-image junk (created despite save=False)
+runs/
 
 # API keys / secrets
 .env
@@ -82,8 +84,8 @@ experiment_a/results/*.jsonl
 # Experiment B — SAM checkpoints (auto-downloaded) + archived dead code
 experiment_b/checkpoints/
 experiment_b/legacy/
-# Exp B raw predictions (archived separately, like Exp A). Keeps agree_*.json summaries +
-# snapshot_results.py + make_example.py + results/README.md trackable.
-experiment_b/results/*.jsonl
+# NOTE: experiment_b/results/ (raw jsonl snapshot + agree_*.json summaries from snapshot_results.py)
+# is intentionally COMMITTED & pushable — it is small (~few MB) and flows lab PC -> git -> laptop for
+# analysis + paper writing. Only the runner's working out/ + cache_b/ stay ignored (see above).
 # NOTE: experiment_b_bundle/images/ is intentionally NOT ignored — the 200 scenes
 # are committed so the lab PC gets them on `git pull`.

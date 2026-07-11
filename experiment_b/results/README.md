@@ -21,8 +21,9 @@ Populate this folder after the runs with: `cd experiment_b && python3 snapshot_r
 - `agree_<mode>_K<K>.json` — the agreement summary (4-way / pairwise agreement, per-model
   consensus accuracy, exception rate, `n_majority`) that fills `tab:main` / `tab:selection`.
 
-`*.jsonl` are git-ignored (archived separately, like Exp A); the summaries + scripts + this README
-are committed.
+Everything here is **committed & pushable** — the raw `*.jsonl` are small (~few MB), so they flow
+lab PC → git → laptop for analysis and paper writing. (Unlike Exp A's larger raw, which was archived
+separately.) Only the runner's working `../experiment_b_bundle/out/` and `cache_b/` stay git-ignored.
 
 ## Taxonomy codes
 `0` Positive · `1` Firmly Negative · `2` Object Non-functional · `3` Physical Obstacle ·

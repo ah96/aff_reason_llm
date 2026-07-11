@@ -94,17 +94,17 @@ python3 snapshot_results.py            # out/*.jsonl + agree_*.json -> results/ 
 python3 make_example.py --mode sam2_area --K 3 --list                          # find good cases
 python3 make_example.py --mode sam2_area --K 3 --image ADE_val_00000013.jpg --region 0 --action sit_on
 
-# commit the small, versionable parts:
-git add experiment_b/results/agree_*.json experiment_b/results/README.md
-git commit -m "Exp B results: agreement summaries (area + concept, K=3)"
+# commit the whole results snapshot (raw jsonl is small -> pushable for cross-machine analysis):
+git add experiment_b/results/
+git commit -m "Exp B results: raw predictions + agreement summaries (area + concept, K=3)"
 git push
 ```
-Transcribe `results/agree_area_K3.json` / `results/agree_concept_K3.json` into `tab:main` and
-`tab:selection`. Recompute anything later with
-`python3 experiment_b_agreement.py --outdir results --mode sam2_area --K 3 --models $STD`.
+On the laptop, `git pull` brings the results over for analysis / figures. Transcribe
+`results/agree_area_K3.json` / `results/agree_concept_K3.json` into `tab:main` and `tab:selection`;
+recompute anything with `python3 experiment_b_agreement.py --outdir results --mode sam2_area --K 3 --models $STD`.
 
-**Git-ignored — do NOT commit (archive separately, like Exp A):** the raw `results/*.jsonl` (and their
-source `../experiment_b_bundle/out/`) and `cache_b/`. The `agree_*.json` + README + scripts are tracked.
+**Committed & pushable:** everything in `experiment_b/results/` (raw `*.jsonl` + `agree_*.json` + README).
+**Git-ignored (regenerable, stay on the lab PC):** the runner's working `../experiment_b_bundle/out/` and `cache_b/`.
 
 ## How long does it take?
 Full run ≈ **14.4k area + ~8–14k concept ≈ 20–28k VLM calls**, plus fast SAM (~10–40 min total).
