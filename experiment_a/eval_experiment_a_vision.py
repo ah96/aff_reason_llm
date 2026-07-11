@@ -13,7 +13,7 @@ Inputs (defaults point at ../experiment_a_bundle):
   ade_affordance_test/<id>_relationship.txt , <id>_exco.json   ground truth
 
 Run (4 standard vision models; set keys first):
-  export OPENAI_API_KEY=... ANTHROPIC_API_KEY=... GEMINI_API_KEY=... TOGETHER_API_KEY=...
+  export OPENAI_API_KEY=... ANTHROPIC_API_KEY=... GEMINI_API_KEY=... OPENROUTER_API_KEY=...
   python3 eval_experiment_a_vision.py --llms configs/llms.json --limit_images 200
 
 Offline smoke test (no keys/network):
