@@ -143,10 +143,28 @@ class _Sam2:
         return _masks_to_boxes(r)
 
 
+def _resolve_sam3_ckpt(ckpt):
+    """SAM 3 weights are gated on HF and ultralytics does NOT auto-download them by name. If `ckpt`
+    is a bare name (e.g. 'sam3.pt') rather than an existing file, resolve it from the gated repo
+    facebook/sam3 (downloads once, then returns the cached path). Needs a prior `hf auth login`."""
+    if os.path.exists(ckpt):
+        return ckpt
+    try:
+        from huggingface_hub import hf_hub_download
+        return hf_hub_download("facebook/sam3", os.path.basename(ckpt) or "sam3.pt")
+    except Exception as e:
+        raise FileNotFoundError(
+            f"SAM 3 checkpoint '{ckpt}' not found and the HF download failed ({e}). Request access at "
+            f"https://huggingface.co/facebook/sam3, run `hf auth login`, then `python download_sam.py "
+            f"--only sam3` -- or pass --sam3_ckpt /full/path/to/sam3.pt."
+        ) from e
+
+
 class _Sam3:
     """ultralytics SAM 3 semantic (text-prompt) concept predictor."""
     def __init__(self, ckpt, device, conf=0.25):
         from ultralytics.models.sam import SAM3SemanticPredictor
+        ckpt = _resolve_sam3_ckpt(ckpt)                      # bare 'sam3.pt' -> HF cache path
         self.pred = SAM3SemanticPredictor(overrides=dict(model=ckpt, conf=conf, device=device,
                                                          task="segment", mode="predict", verbose=False))
 
