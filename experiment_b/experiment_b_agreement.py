@@ -54,21 +54,33 @@ def main():
             pair_agree += (v[a] == v[b])
     pairwise = pair_agree / max(1, pair_tot)
 
+    # Consensus vs. majority is only well-defined when a STRICT majority exists. A tie for the
+    # top label (e.g. a 2-2 split among 4 models) has NO majority; resolving it via
+    # Counter.most_common would break the tie by insertion/model order, unfairly crediting whichever
+    # models happen to hold the alphabetically-first value. We therefore exclude no-majority items
+    # from consensus accuracy and the exception rate, and report how many there were. N-way and
+    # pairwise agreement above are tie-free and need no such handling.
     consensus_hits = {m: 0 for m in M}
     exc = 0
+    n_maj = 0
     for v in items:
-        maj = Counter(v[m] for m in M).most_common(1)[0][0]
+        top = Counter(v[m] for m in M).most_common()
+        if len(top) > 1 and top[1][1] == top[0][1]:
+            continue                              # no strict majority (tie) -> undefined, skip
+        n_maj += 1
+        maj = top[0][0]
         if 2 <= maj <= 6:
             exc += 1
         for m in M:
             consensus_hits[m] += (v[m] == maj)
 
     summary = {
-        "mode": args.mode, "K": args.K, "models": M, "n_items": n,
+        "mode": args.mode, "K": args.K, "models": M,
+        "n_items": n, "n_majority": n_maj,
         "agreement_Nway": round(nway, 4),
         "agreement_pairwise": round(pairwise, 4),
-        "exception_rate": round(exc / max(1, n), 4),
-        "consensus_acc": {m: round(consensus_hits[m] / max(1, n), 4) for m in M},
+        "exception_rate": round(exc / max(1, n_maj), 4),
+        "consensus_acc": {m: round(consensus_hits[m] / max(1, n_maj), 4) for m in M},
     }
     print(json.dumps(summary, indent=2))
     if args.out:
