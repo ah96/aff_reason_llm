@@ -1,0 +1,9 @@
+{
+  "_comment": "Per-action object concepts used as SAM 3 text prompts to segment affordance-RELEVANT objects (the knowledge base). SAM 3 finds all objects matching these concepts in a scene; those instances are then queried with the 7-way taxonomy. The area-ranked SAM 2 baseline ignores this and proposes every instance.",
+  "sit_on": ["chair", "sofa", "couch", "armchair", "bench", "stool", "seat", "bed", "ottoman"],
+  "hold": ["cup", "mug", "bottle", "glass", "book", "phone", "remote control", "handbag", "plate", "bowl", "box", "umbrella", "tool"],
+  "carry": ["bag", "backpack", "suitcase", "box", "basket", "bucket", "crate", "tray", "luggage", "container"],
+  "cut": ["knife", "scissors", "saw", "axe", "blade", "cleaver", "cutting board"],
+  "throw": ["ball", "frisbee", "dart", "stone", "bottle", "can"],
+  "ride": ["bicycle", "motorcycle", "horse", "scooter", "skateboard", "moped", "boat", "surfboard"]
+}

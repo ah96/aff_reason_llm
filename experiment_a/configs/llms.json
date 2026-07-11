@@ -1,36 +1,46 @@
 [
   {
-    "name": "gpt_5_mini",
+    "name": "gpt_5_5",
     "provider": "openai_compat",
     "base_url": "https://api.openai.com/v1",
     "api_key": "ENV:OPENAI_API_KEY",
-    "model": "gpt-5-mini",
+    "model": "gpt-5.5",
     "temperature": 0.0,
-    "max_tokens": 256
+    "max_tokens": 512
   },
   {
-    "name": "claude_sonnet_4_6",
+    "name": "claude_sonnet_5",
     "provider": "anthropic",
     "api_key": "ENV:ANTHROPIC_API_KEY",
-    "model": "claude-sonnet-4-6",
+    "model": "claude-sonnet-5",
     "temperature": 0.0,
-    "max_tokens": 256
+    "max_tokens": 512
   },
   {
-    "name": "gemini_2_5_pro",
+    "name": "gemini_3_5_flash",
     "provider": "gemini",
     "api_key": "ENV:GEMINI_API_KEY",
-    "model": "gemini-2.5-pro",
+    "model": "gemini-3.5-flash",
     "temperature": 0.0,
-    "max_tokens": 256
+    "max_tokens": 512
   },
   {
-    "name": "local_llama_vllm",
+    "name": "llama_4_maverick",
     "provider": "openai_compat",
-    "base_url": "http://localhost:8000/v1",
-    "api_key": "EMPTY",
-    "model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key": "ENV:OPENROUTER_API_KEY",
+    "model": "meta-llama/llama-4-maverick",
     "temperature": 0.0,
-    "max_tokens": 256
+    "max_tokens": 512
+  },
+  {
+    "name": "o4_mini",
+    "provider": "openai_compat",
+    "base_url": "https://api.openai.com/v1",
+    "api_key": "ENV:OPENAI_API_KEY",
+    "model": "o4-mini",
+    "max_tokens": 2048,
+    "reasoning": true,
+    "_note": "Reasoning model — run on held-out subset only. Temperature not set (ignored by o-series)."
   }
 ]

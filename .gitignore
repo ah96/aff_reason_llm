@@ -30,6 +30,7 @@ sam_vit_*.pth
 out_b/
 outputs/
 cache_b/
+experiment_b_bundle/out/
 
 # API keys / secrets
 .env
@@ -64,3 +65,22 @@ paper/*.toc
 data/
 datasets/
 ade_affordance/
+
+# Paper — kept on Overleaf, not GitHub
+overleaf/
+
+# Reference material / PDFs (large, not needed to run anything)
+related_work/
+*.pdf
+
+# Experiment A data + cache + raw predictions (archived separately).
+# Keeps the small summary *.json + score_from_raw.py + results/README.md trackable.
+experiment_a_bundle/
+experiment_a/cache_a_vision/
+experiment_a/results/*.jsonl
+
+# Experiment B — SAM checkpoints (auto-downloaded) + archived dead code
+experiment_b/checkpoints/
+experiment_b/legacy/
+# NOTE: experiment_b_bundle/images/ is intentionally NOT ignored — the 200 scenes
+# are committed so the lab PC gets them on `git pull`.

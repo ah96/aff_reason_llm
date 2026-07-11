@@ -19,8 +19,12 @@ def bleu4(candidate: str, references: List[str]) -> float:
 
 
 def meteor(candidate: str, references: List[str]) -> float:
-    # NLTK meteor_score expects list of references (strings) + candidate string
-    return float(meteor_score(references, candidate))
+    # Newer NLTK expects PRE-TOKENIZED input: references as list[list[str]], hypothesis as list[str].
+    refs_tok = [r.split() for r in references]
+    cand_tok = candidate.split()
+    if not cand_tok or not any(refs_tok):
+        return 0.0
+    return float(meteor_score(refs_tok, cand_tok))
 
 
 def rouge_l(candidate: str, references: List[str]) -> float:
