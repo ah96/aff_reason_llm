@@ -262,47 +262,76 @@ def main():
     if seeded:
         print(f"Resuming: {seeded} existing rows loaded across {len(acc)} model file(s).", flush=True)
 
-    for image_id in tqdm(ids, desc="images"):
-        img = Image.open(os.path.join(args.images_dir, image_id)).convert("RGB")
-        insts = provider(img, args.actions, args.K, **prov_kw)
-        if not insts:
-            continue
-        full_b64 = b64png(img, args.full_px)
-        # build (instance, action) jobs shared across all models
-        pairs = [(inst, a) for inst in insts for a in inst["actions"]]
-        crops = {inst["region_id"]: b64png(crop_bbox(img, inst["bbox"]), args.crop_px) for inst in insts}
+    # Per-CALL progress bar (like Experiment A): advances once per (region, action, model) call,
+    # not once per image, and shows live cached/live/err counts. The total is an upper bound
+    # (K regions x actions x models per image); it is corrected to the true count at the end.
+    est_total = len(ids) * args.K * len(args.actions) * max(1, len(clients))
+    stats = {"cached": 0, "live": 0, "err": 0, "exc": 0}
+    pbar = tqdm(total=est_total, desc="calls", unit="call", smoothing=0.03)
 
-        def run(job):
-            (inst, action), name, client = job
-            cp = os.path.join(args.cache_dir, args.mode, name, image_id, f"{action}_{inst['region_id']}.json")
-            pred = read_json(cp)
-            if pred is None:
-                try:
-                    pred = client.complete_json(system=SYSTEM_PROMPT, user=user_prompt(action),
-                                                images_b64png=[full_b64, crops[inst["region_id"]]])
-                    write_json(cp, pred)
-                except Exception as e:
-                    return job, {"relationship_id": -1, "_error": str(e)}
-            return job, pred
+    def run(job, image_id, full_b64, crops):
+        (inst, action), name, client = job
+        cp = os.path.join(args.cache_dir, args.mode, name, image_id, f"{action}_{inst['region_id']}.json")
+        pred = read_json(cp)
+        if pred is not None:
+            return job, pred, "cached", None                  # cache hit -> no API call, no cost
+        try:
+            pred = client.complete_json(system=SYSTEM_PROMPT, user=user_prompt(action),
+                                        images_b64png=[full_b64, crops[inst["region_id"]]])
+            write_json(cp, pred)                              # persist immediately -> resumable
+            return job, pred, "live", None
+        except Exception as e:
+            return job, {"relationship_id": -1, "_error": str(e)}, "err", str(e)
 
-        jobs = [(p, name, client) for p in pairs for name, client in clients]
-        with ThreadPoolExecutor(max_workers=max(1, args.workers)) as ex:
-            for job, pred in ex.map(run, jobs):
-                (inst, action), name, client = job
-                pr = int(pred.get("relationship_id", -1))
-                if not (0 <= pr <= 6):
-                    continue
-                acc[name][(image_id, inst["region_id"], action)] = {
-                    "image": image_id, "region_id": inst["region_id"], "bbox": inst["bbox"],
-                    "action": action, "relationship_id": pr,
-                    "explanation": pred.get("explanation", ""), "consequence": pred.get("consequence", ""),
-                }
-        # persist after every image so an interrupted run keeps its progress
+    def _postfix(idx):
+        pbar.set_postfix(img=f"{idx + 1}/{len(ids)}", cached=stats["cached"],
+                         live=stats["live"], err=stats["err"], exc=stats["exc"])
+
+    try:
+        for idx, image_id in enumerate(ids):
+            img = Image.open(os.path.join(args.images_dir, image_id)).convert("RGB")
+            insts = provider(img, args.actions, args.K, **prov_kw)
+            if not insts:
+                _postfix(idx)
+                continue
+            full_b64 = b64png(img, args.full_px)
+            pairs = [(inst, a) for inst in insts for a in inst["actions"]]
+            crops = {inst["region_id"]: b64png(crop_bbox(img, inst["bbox"]), args.crop_px) for inst in insts}
+            jobs = [(p, name, client) for p in pairs for name, client in clients]
+            with ThreadPoolExecutor(max_workers=max(1, args.workers)) as ex:
+                for job, pred, kind, err in ex.map(lambda j: run(j, image_id, full_b64, crops), jobs):
+                    pbar.update(1)
+                    stats[kind] += 1
+                    (inst, action), name, client = job
+                    pr = int(pred.get("relationship_id", -1))
+                    if 0 <= pr <= 6:
+                        if 2 <= pr <= 6:
+                            stats["exc"] += 1
+                        acc[name][(image_id, inst["region_id"], action)] = {
+                            "image": image_id, "region_id": inst["region_id"], "bbox": inst["bbox"],
+                            "action": action, "relationship_id": pr,
+                            "explanation": pred.get("explanation", ""), "consequence": pred.get("consequence", ""),
+                        }
+                    _postfix(idx)
+            # persist after every image so an interrupted run keeps its progress
+            for n in acc:
+                flush(paths[n], acc[n])
+    except KeyboardInterrupt:
         for n in acc:
             flush(paths[n], acc[n])
+        pbar.close()
+        done = sum(len(v) for v in acc.values())
+        print(f"\n[interrupted] progress saved: {done} rows | {stats['cached']} cached, "
+              f"{stats['live']} live, {stats['err']} err.", flush=True)
+        print("Re-run the SAME command to resume — cached calls are skipped (no repeat spend).", flush=True)
+        return
+
+    pbar.total = pbar.n            # correct the upper-bound estimate to the true count -> shows 100%
+    pbar.refresh(); pbar.close()
 
     total = sum(len(v) for v in acc.values())
-    print(f"\nWrote {total} rows across {len(acc)} model file(s) -> {args.outdir}/<model>_{args.mode}_K{args.K}.jsonl", flush=True)
+    print(f"\nWrote {total} rows across {len(acc)} model file(s) -> {args.outdir}/<model>_{args.mode}_K{args.K}.jsonl "
+          f"| {stats['cached']} cached, {stats['live']} live calls, {stats['err']} errors, {stats['exc']} exceptions", flush=True)
 
 
 if __name__ == "__main__":
