@@ -1,48 +1,9 @@
-# -----------------------------
-# Core scientific stack
-# -----------------------------
-numpy>=1.23
-scipy>=1.9
-pillow>=9.5
-opencv-python>=4.8
+# Full dependency set for both experiments.
+# If you only need one, install its requirements directly instead:
+#   pip install -r experiments/experiment_a/requirements.txt   # Experiment A (CPU, cloud VLMs)
+#   pip install -r experiments/experiment_b/requirements.txt   # Experiment B (GPU, SAM pipeline)
+#
+# Note: install torch/torchvision matching your CUDA FIRST (see experiment_b/requirements.txt).
 
-# -----------------------------
-# PyTorch (install separately with correct CUDA version!)
-# DO NOT install via pip here to avoid CUDA mismatches.
-# Example:
-#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-# -----------------------------
-# torch
-# torchvision>=0.15
-
-# -----------------------------
-# Segment Anything (SAM)
-# -----------------------------
-git+https://github.com/facebookresearch/segment-anything.git
-
-# -----------------------------
-# LLM backends (choose what you need)
-# -----------------------------
-
-# OpenAI (GPT-4.1 / GPT-4V)
-openai>=1.50
-
-# Anthropic (Claude Sonnet 4.6+)
-anthropic>=0.50
-
-# Google Gemini
-google-generativeai>=0.8
-
-# -----------------------------
-# Text metrics (Experiment A)
-# -----------------------------
-nltk>=3.8
-rouge-score>=0.1.2
-# Optional CIDEr support (install manually if needed):
-#   pip install pycocoevalcap
-
-# -----------------------------
-# Utilities
-# -----------------------------
-tqdm>=4.66
-requests>=2.31
+-r experiments/experiment_a/requirements.txt
+-r experiments/experiment_b/requirements.txt
