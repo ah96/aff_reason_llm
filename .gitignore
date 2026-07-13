@@ -63,11 +63,13 @@ overleaf/
 related_work/
 *.pdf
 
-# Experiment A data + cache + raw predictions (archived separately).
-# Keeps the small summary *.json + score_from_raw.py + results/README.md trackable.
+# Experiment A — the data bundle (images/seg/GT: large + regenerable via build_instance_masks.py)
+# and the 54k-file cache stay out of git. The raw predictions (results/raw_*.jsonl, ~15 MB) ARE
+# committed so mAcc-7/mAcc-3 are reproducible from the repo alone (each row carries gt + pred);
+# only the redundant all_predictions.jsonl concat is ignored.
 experiments/experiment_a_bundle/
 experiments/experiment_a/cache_a_vision/
-experiments/experiment_a/results/*.jsonl
+experiments/experiment_a/results/all_predictions.jsonl
 
 # Experiment B — SAM checkpoints (auto-downloaded) + archived dead code
 experiments/experiment_b/checkpoints/

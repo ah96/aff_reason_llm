@@ -45,7 +45,7 @@ export OPENAI_API_KEY=...  ANTHROPIC_API_KEY=...  GEMINI_API_KEY=...  OPENROUTER
 ```
 Models (`configs/llms.json`): `gpt_5_5`, `claude_sonnet_5`, `gemini_3_5_flash` (free tier),
 `llama_4_maverick` (OpenRouter), `o4_mini` (reasoning, exception subset only). No GPU required — the
-scene/crop images come from the `experiment_a_bundle/` (data + cache are git-ignored, archived separately).
+scene/crop images come from the `experiment_a_bundle/` (git-ignored; the bundle is regenerable via `build_instance_masks.py`, the cache by re-running).
 
 ### 2. One-time data prep (builds instance masks + full images)
 ```bash

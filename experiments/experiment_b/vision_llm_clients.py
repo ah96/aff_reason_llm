@@ -66,16 +66,55 @@ def _resolve_api_key(k: str) -> str:
 
 
 def _extract_json(text: str) -> Dict[str, Any]:
-    """Accept exact JSON or a response containing a JSON object (handles markdown fences)."""
-    text = (text or "").strip()
+    """Robustly extract a JSON object from an LLM response.
+
+    Tolerates the formatting quirks seen from thinking models (e.g. gemini-3.5-flash): markdown
+    ```json fences, trailing junk or an extra closing brace, and a *missing* closing brace (the
+    model sometimes drops the final '}' even with finishReason=STOP). Returns the first balanced
+    object; if the object is left unclosed, repairs it by closing open strings/braces.
+    """
+    raw = (text or "").strip()
+    t = raw
+    if t.startswith("```"):                     # strip a ```json / ``` fence
+        t = t[3:]
+        if t[:4].lower() == "json":
+            t = t[4:]
+        t = t.strip().rstrip("`").strip()
     try:
-        return json.loads(text)
+        return json.loads(t)
     except Exception:
-        s = text.find("{")
-        e = text.rfind("}")
-        if s >= 0 and e > s:
-            return json.loads(text[s : e + 1])
-        raise ValueError(f"LLM did not return JSON. Output:\n{text}")
+        pass
+    s = t.find("{")
+    if s < 0:
+        raise ValueError(f"LLM did not return JSON. Output:\n{raw}")
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(s, len(t)):                  # walk to the first balanced '}', string-aware
+        c = t[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = False
+        elif c == '"':
+            in_str = True
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return json.loads(t[s : i + 1])
+    frag = t[s:]                                 # unbalanced -> model dropped closing brace(s); repair
+    if in_str:
+        frag += '"'
+    frag += "}" * max(1, depth)
+    try:
+        return json.loads(frag)
+    except Exception:
+        raise ValueError(f"LLM did not return JSON. Output:\n{raw}")
 
 
 class VisionLLMClient:
@@ -218,9 +257,9 @@ class GeminiVisionClient(VisionLLMClient):
 
         gen_cfg = {
             "temperature": self.temperature,
-            # Gemini 3.x flash keeps "thinking" even with thinkingBudget=0 (the flag is ignored
-            # or unsupported), and thinking tokens count against maxOutputTokens -> the visible
-            # JSON gets truncated. Give a large budget so thinking + the short JSON both fit.
+            # Ample budget for thinking + the short JSON (responses finish with STOP, not
+            # MAX_TOKENS). gemini-3.5-flash's JSON formatting is flaky (occasional missing/extra
+            # brace); _extract_json normalizes it, so we don't depend on perfectly-formed output.
             "maxOutputTokens": max(8192, self.max_tokens),
             "responseMimeType": "application/json",
             "thinkingConfig": {"thinkingBudget": 0},
@@ -231,7 +270,7 @@ class GeminiVisionClient(VisionLLMClient):
         # Not all model versions accept thinkingConfig; retry once without it if that's the complaint.
         if r.status_code == 400 and "thinking" in r.text.lower():
             gen_cfg.pop("thinkingConfig", None)
-            gen_cfg["maxOutputTokens"] = max(2048, self.max_tokens)   # give thinking room instead
+            gen_cfg["maxOutputTokens"] = max(8192, self.max_tokens)
             r = _post(url, json=payload, timeout=120)
         if r.status_code != 200:
             raise RuntimeError(f"HTTP {r.status_code}: {r.text[:400]}")
@@ -240,10 +279,16 @@ class GeminiVisionClient(VisionLLMClient):
         candidates = data.get("candidates", [])
         if not candidates:
             raise ValueError(f"Gemini returned no candidates: {data}")
-        parts_out = candidates[0].get("content", {}).get("parts", [])
-        if not parts_out:
-            raise ValueError(f"Gemini returned no parts: {data}")
-        return _extract_json(parts_out[0].get("text", ""))
+        cand = candidates[0]
+        parts_out = cand.get("content", {}).get("parts", [])
+        # Thinking models may emit a separate thought part; concatenate every text part.
+        text = "".join(p.get("text", "") for p in parts_out if isinstance(p, dict) and p.get("text"))
+        if not text:
+            raise ValueError(f"Gemini returned no text (finishReason={cand.get('finishReason')}): {data}")
+        try:
+            return _extract_json(text)
+        except Exception as e:
+            raise ValueError(f"Gemini JSON parse failed (finishReason={cand.get('finishReason')}): {e}")
 
 
 def load_llms(path: str) -> List[LLMConfig]:

@@ -1,8 +1,8 @@
-# AffBench: Typed Affordance Reasoning with Frontier VLMs
+# Typed Affordance Reasoning with Frontier VLMs
 
 **ECCV 2026 Workshop X-Reason** — *Visual Perception and Reasoning in the Interactable World*
 
-AffBench evaluates whether frontier Vision-Language Models (VLMs) can reason about **affordances**
+This project evaluates whether frontier Vision-Language Models (VLMs) can reason about **affordances**
 — not just *whether* an action is possible, but the **type** of constraint (physical, functional,
 social, or safety) that makes it appropriate or forbidden. Two experiments:
 
@@ -48,7 +48,7 @@ aff_reason_llm/
 │   │   ├── export_raw_results.py       # cache → compact per-model JSONL
 │   │   ├── ade_parsing.py, metrics_relationship.py, metrics_caption.py
 │   │   ├── configs/llms.json
-│   │   └── results/                    # released raw predictions + scorer (see results/README.md)
+│   │   └── results/                    # committed raw predictions (raw_*.jsonl) + scorer + summaries
 │   │
 │   ├── experiment_b/                # Exp B — GT-free agreement pipeline (DONE)
 │   │   ├── HOW_TO_RUN_EXP_B.md          # ← full run guide (setup, smoke tests, cost)
@@ -68,11 +68,12 @@ aff_reason_llm/
 └── LICENSE
 ```
 
-Large / regenerated artifacts are **git-ignored** and archived separately: `overleaf/` (the paper lives
-on Overleaf), `datasets/`, `experiments/experiment_a_bundle/`, `experiments/experiment_a/cache_a_vision/`,
-`experiments/experiment_a/results/*.jsonl`, `experiments/experiment_b/checkpoints/` (SAM weights),
-`experiments/experiment_b/legacy/` (archived old pipeline), `cache_b/`, and
-`experiments/experiment_b_bundle/out/`.
+The **raw per-model predictions are committed** — `experiments/experiment_a/results/raw_*.jsonl` and
+`experiments/experiment_b/results/*.jsonl` — so every reported metric reproduces from the repo with no
+dataset download or API call (each row carries `gt` + `pred`). Large or regenerable artifacts are
+**git-ignored**: `overleaf/` (the paper lives on Overleaf), `datasets/`, `experiments/experiment_a_bundle/`
+(images/seg/GT — regenerable via `build_instance_masks.py`), the `cache_a_vision/` / `cache_b/` caches,
+`experiments/experiment_b/checkpoints/` (SAM weights), and `experiments/experiment_b/legacy/`.
 
 ---
 
@@ -80,14 +81,15 @@ on Overleaf), `datasets/`, `experiments/experiment_a_bundle/`, `experiments/expe
 
 200 ADE20K images / 13,512 (instance, action) pairs, scored vs ADE-Affordance. Full run guide and the
 reproduce-from-raw commands are in **[`experiments/experiment_a/README.md`](experiments/experiment_a/README.md)**.
-Released raw predictions (one row per model per instance, with each model's explanation) live in
-[`experiments/experiment_a/results/`](experiments/experiment_a/results/) — recompute any metric with:
+The **committed** raw predictions (one row per model per instance, with `gt`, `pred`, and each model's
+explanation) live in [`experiments/experiment_a/results/`](experiments/experiment_a/results/). All four
+standard models cover all 13,512 pairs (100%); recompute the paper's numbers with no download or API key:
 
 ```bash
 cd experiments/experiment_a/results && python3 score_from_raw.py   # mAcc-7 / mAcc-3 per model
 ```
 
-Headline (mAcc-7 / mAcc-3): Claude Sonnet 5 0.289 / 0.504 · Gemini 3.5 Flash 0.276 / 0.531 ·
+Headline (mAcc-7 / mAcc-3): Claude Sonnet 5 0.289 / 0.504 · Gemini 3.5 Flash 0.277 / 0.531 ·
 GPT-5.5 0.251 / 0.480 · Llama 4 Maverick 0.240 / 0.471. On the exception subset, standard Claude
 (mAcc-3 0.763) matches/exceeds the reasoning model o4-mini (0.701).
 
@@ -116,7 +118,7 @@ Concept-targeting raises agreement but lowers the exception rate — the models 
 ```bibtex
 @inproceedings{affbench2026,
   title     = {Can Frontier Vision-Language Models Reason About the Interactable World?
-               A Typed Affordance Benchmark},
+               A Typed Affordance Evaluation},
   author    = {TBD},
   booktitle = {ECCV 2026 Workshop on Visual Perception and Reasoning in the
                Interactable World (X-Reason)},
